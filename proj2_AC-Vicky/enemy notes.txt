@@ -1,0 +1,47 @@
+MAIN CLASS STRUCTURE
+enemy: VARIABLE
+	gnome, goblin, slime
+			goblin
+				hp: 6
+				attack: 2
+				%(eChoice):
+					a: .7
+					d: .3
+					m: 0
+			gnome
+				hp: 5
+				attack: 2
+				%(eChoice):
+					a: .15
+					d: .75
+					m: .10
+			slime
+				hp: 8
+				attack: 2
+				%(eChoice):
+					a: .15
+					d: .25
+					m: .60
+enemy_gen: METHOD
+	creates the enemies based on variable types
+	generates specific eneimes for combat
+	used to control "boss" vs "not boss"
+	
+combat: METHOD
+	method to run all the combat phase and interactions
+	bridge between enemy_gen and player, basically
+		a, d, m = "attack", "defense", "magic"
+		a = give+1, take+1
+		d = give-1, take-1
+		m = give, take
+
+		if (pChoice == eChoice):
+			TIE
+			a vs a (base+1) vs (base+1)
+			d vs d (base-1) vs (base-1)
+			m vs m (base) vs (base)
+
+		a > m; (base+1) vs (base) = (base+1) (0); (== m < a)
+		d > a; (base+1) vs (base-1) = (0) (base); (== a < d)
+		m > d; (base) vs (base-1) = (base) (0); (== d < m)
+

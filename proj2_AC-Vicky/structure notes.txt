@@ -1,0 +1,29 @@
+CLASSES
+	stats
+	(a place to keep global vars + control vars)
+		global vars:
+			hp, chapter, level, xp
+		global inventory:
+			dictionary with [name, quantity]
+		control dictionary:
+			special keys unlocked (keep chapter here?)
+		save method
+
+	enemies
+	(a place to create enemy variables, generate enemies and combats)
+		enemy types:
+			gnome, goblin, slime
+		methods to add:
+			enemy_gen:
+				creates the enemies based on variable types
+				generates specific eneimes for combat
+				used to control "boss" vs "not boss"
+			combat:
+				method to run all the combat phase and interactions
+				bridge between enemy_gen and player, basically
+
+MAIN
+	where the story happens
+	each chapter as a method
+		c1: tutorial
+		pulls from classes to keep main mostly aesthetic

@@ -31,7 +31,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="notes.txt" />
+    <Content Include="enemy notes.txt" />
+    <Content Include="stats notes.txt" />
+    <Content Include="structure notes.txt" />
+    <Content Include="story notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
