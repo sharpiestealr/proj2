@@ -24,6 +24,7 @@ CLASSES
 
 MAIN
 	where the story happens
-	each chapter as a method
+	each chapter as a method //? unsure if this is the best idea but tbh might be good to clean up main & keep it organized.
+								use it as a static void? or maybe it'll return chapter number?
 		c1: tutorial
-		pulls from classes to keep main mostly aesthetic
+		pulls from classes to keep main mostly "aesthetic" //run chapter methods and art design in main, brick them off at the top and collapse

@@ -22,12 +22,12 @@ enemy: VARIABLE
 					a: .15
 					d: .25
 					m: .60
-enemy_gen: METHOD
+enemy_gen: METHOD //static, receives number of enemies+type of enemy when applicable with pseudo s/c, returns enemy_stats
 	creates the enemies based on variable types
 	generates specific eneimes for combat
 	used to control "boss" vs "not boss"
 	
-combat: METHOD
+combat: METHOD //static, receives enemy_stats, returns combat damage
 	method to run all the combat phase and interactions
 	bridge between enemy_gen and player, basically
 		a, d, m = "attack", "defense", "magic"
