@@ -1,4 +1,5 @@
 MAIN CLASS STRUCTURE
+
 enemy: VARIABLE
 	gnome, goblin, slime
 			goblin
@@ -23,8 +24,12 @@ enemy: VARIABLE
 					d: .25
 					m: .60
 enemy_gen: METHOD //static, receives number of enemies+type of enemy when applicable with pseudo s/c, returns enemy_stats
+																												enemy stats:
+																												level (work hp, base damage in function of)
+																												boss factor
+																												xp yield
 	creates the enemies based on variable types
-	generates specific eneimes for combat
+	generates specific enemies for combat
 	used to control "boss" vs "not boss"
 	
 combat: METHOD //static, receives enemy_stats, returns combat damage
