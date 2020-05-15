@@ -50,14 +50,14 @@ def combat(enemy_type, boss): #, mob_size to add if necessary
             enemy.attack = sli_ATK()
         #steps 2, 3 don't actually exist (yet, may never)
         #4, 5: calculate damage, place damage
-        enemy.dmg = rps(enemy, enemy_atk)
-        Player.dmg = rps(Player, Player.attack)
+        enemy.dmg = rps(enemy)
+        #Player.dmg = rps(Player, Player.attack) - in theory, the values for this are being set before as they're public and mutable
         enemy.hp = enemy.hp - (Player.dmg + enemy.res)
         Player.hp = Player.hp - (enemy.dmg + Player.res)
         #steps 6, 7 don't actually exist (yet, may never)
         #steps 8, 9, 10 are redundant because of while-loop
-
-
+    
+    return xp_yield
 
 #methods to define the attack choice of the enemies
 def gob_ATK():
@@ -91,7 +91,7 @@ def sli_ATK():
     return attack_choice
 
 #method to determine damage
-def rps():
+def rps(enemy):
     #if both are the same
     if (Player.attack == enemy.attack):
         if Player.attack == 'attack':
@@ -109,36 +109,31 @@ def rps():
             Player.res = 0
             enemy.dmg = enemy.atk
             enemy.res = 0
-    #if they are different
-    elif (Player.attack == 'attack') and (enemy.attack == 'defense'):
+    #if they are different - by player
+    elif (Player.attack == 'attack'):
         Player.dmg = Player.atk +1
         Player.res = -1
-        enemy.dmg = enemy.atk -1
-        enemy.res = +1
-    elif (Player.attack == 'attack') and (enemy.attack == 'magic'):
-        Player.dmg = Player.atk +1
-        Player.res = -1
-        enemy.dmg = enemy.atk
-        enemy.res = 0
-    elif (Player.attack == 'defense') and (enemy.attack == 'attack'):
+        if (enemy.attack == 'defense'):
+            enemy.dmg = enemy.atk -1
+            enemy.res = +1
+        elif (enemy.attack == 'magic'):
+            enemy.dmg = enemy.atk
+            enemy.res = 0
+    elif (Player.attack == 'defense'):
         Player.dmg = Player.atk -1
         Player.res = +1
-        enemy.dmg = enemy.atk +1
-        enemy.res = -1
-    elif (Player.attack == 'defense') and (enemy.attack == 'magic'):
-        Player.dmg = Player.atk -1
-        Player.res = +1
-        enemy.dmg = enemy.atk
-        enemy.res = 0
-    elif (Player.attack == 'magic') and (enemy.attack == 'attack'):
+        if (enemy.attack == 'attack'):
+            enemy.dmg = enemy.atk +1
+            enemy.res = -1
+        elif (enemy.attack == 'magic'):
+            enemy.dmg = enemy.atk
+            enemy.res = 0
+    elif (Player.attack == 'magic'):
         Player.dmg = Player.atk
         Player.res = 0
-        enemy.dmg = enemy.atk +1
-        enemy.res = -1
-    elif (Player.attack == 'magic') and (enemy.attack == 'defense'):
-        Player.dmg = Player.atk
-        Player.res = 0
-        enemy.dmg = enemy.atk -1
-        enemy.res = +1
-    #need to finish this by doing enemy > player
-    #after that, Enemy class is done
+        if (enemy.attack == 'attack'):
+            enemy.dmg = enemy.atk +1
+            enemy.res = -1
+        elif (enemy.attack == 'defense'):
+            enemy.dmg = enemy.atk -1
+            enemy.res = +1

@@ -50,3 +50,32 @@ combat: METHOD //static, receives enemy_stats, returns combat damage
 		d > a; (base+1) vs (base-1) = (0) (base); (== a < d)
 		m > d; (base) vs (base-1) = (base) (0); (== d < m)
 
+	RPS
+	#if they are different - by enemy
+    elif (enemy.attack == 'attack'):
+        enemy.dmg = enemy.atk +1
+        enemy.res = -1
+        if (Player.attack == 'defense'):
+            Player.dmg = Player.atk -1
+            Player.res = +1
+        elif (Player.attack == 'magic'):
+            Player.dmg = Player.atk
+            Player.res = 0
+    elif (enemy.attack == 'defense'):
+        enemy.dmg = enemy.atk -1
+        enemy.res = +1
+        if (Player.attack == 'attack'):
+            Player.dmg = Player.atk +1
+            Player.res = -1
+        elif (Player.attack == 'magic'):
+            Player.dmg = Player.atk
+            enemy.res = 0
+    elif (enemy.attack == 'magic'):
+        enemy.dmg = enemy.atk
+        enemy.res = 0
+        if (Player.attack == 'attack'):
+            Player.dmg = Player.atk +1
+            Player.res = -1
+        elif (Player.attack == 'defense'):
+            Player.dmg = Player.atk -1
+            Player.res = +1
