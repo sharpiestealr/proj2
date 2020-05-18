@@ -25,7 +25,6 @@
     <Compile Include="enemies.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="gamescreen.py" />
     <Compile Include="main.py" />
     <Compile Include="stats.py">
       <SubType>Code</SubType>

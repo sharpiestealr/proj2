@@ -51,7 +51,7 @@ def combat(enemy_type, boss): #, mob_size to add if necessary
         #steps 2, 3 don't actually exist (yet, may never)
         #4, 5: calculate damage, place damage
         enemy.dmg = rps(enemy)
-        #jogador.dmg = rps(Player, Player.attack) - in theory, the values for this are being set before as they're public and mutable
+        #Player.dmg = rps(Player, Player.attack) - in theory, the values for this are being set before as they're public and mutable
         enemy.hp = enemy.hp - (Player.dmg + enemy.res)
         Player.hp = Player.hp - (enemy.dmg + Player.res)
         #steps 6, 7 don't actually exist (yet, may never)

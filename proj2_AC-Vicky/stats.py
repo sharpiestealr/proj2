@@ -1,5 +1,5 @@
 class Player(object):
-    """a place to keep global vars + control vars"""
+    """a place to keep player info"""
         #player stats
     def name():
         self.name = input("What's your name, adventurer? ")  
@@ -16,12 +16,14 @@ class Player(object):
     self.res = 0
     self.attack = " "
 
+jogador = Player()
+
 #player choice, going to be buttons in final version. Using input as a preliminary version
-Player.attack = input("attack, defense or magic")
+Player.attack = input("Choose between attack, defense or magic, {0}".format(jogador.name))
 
 #check lvl up post combat
-def lvl_up(Player.xp, Player.threshold, Player.level):
-    if Player.xp >= Player.threshold:
-        Player.xp = Player.xp - Player.threshold
-        Player.level = Player.level + 1
-        Player.threshold = Player.threshold*2
+def lvl_up(jogador):
+    if jogador.xp >= jogador.threshold:
+        jogador.xp = jogador.xp - jogador.threshold
+        jogador.level = jogador.level + 1
+        jogador.threshold = jogador.threshold*2

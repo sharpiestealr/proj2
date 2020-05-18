@@ -1,0 +1,81 @@
+MAIN CLASS STRUCTURE
+
+enemy: VARIABLE
+	gnome, goblin, slime
+			goblin
+				hp: 6
+				attack: 2
+				%(eChoice):
+					a: .7
+					d: .3
+					m: 0
+			gnome
+				hp: 5
+				attack: 2
+				%(eChoice):
+					a: .15
+					d: .75
+					m: .10
+			slime
+				hp: 8
+				attack: 2
+				%(eChoice):
+					a: .15
+					d: .25
+					m: .60
+enemy_gen: METHOD //static, receives number of enemies+type of enemy when applicable with pseudo s/c, returns enemy_stats
+																												enemy stats:
+																												level (work hp, base damage in function of)
+																												boss factor
+																												xp yield
+	creates the enemies based on variable types
+	generates specific enemies for combat
+	used to control "boss" vs "not boss"
+	
+combat: METHOD //static, receives enemy_stats, returns combat damage
+	method to run all the combat phase and interactions
+	bridge between enemy_gen and player, basically
+		a, d, m = "attack", "defense", "magic"
+		a = give+1, take+1
+		d = give-1, take-1
+		m = give, take
+
+		if (pChoice == eChoice):
+			TIE
+			a vs a (base+1) vs (base+1)
+			d vs d (base-1) vs (base-1)
+			m vs m (base) vs (base)
+
+		a > m; (base+1) vs (base) = (base+1) (0); (== m < a)
+		d > a; (base+1) vs (base-1) = (0) (base); (== a < d)
+		m > d; (base) vs (base-1) = (base) (0); (== d < m)
+
+	RPS
+	#if they are different - by enemy
+    elif (enemy.attack == 'attack'):
+        enemy.dmg = enemy.atk +1
+        enemy.res = -1
+        if (Player.attack == 'defense'):
+            Player.dmg = Player.atk -1
+            Player.res = +1
+        elif (Player.attack == 'magic'):
+            Player.dmg = Player.atk
+            Player.res = 0
+    elif (enemy.attack == 'defense'):
+        enemy.dmg = enemy.atk -1
+        enemy.res = +1
+        if (Player.attack == 'attack'):
+            Player.dmg = Player.atk +1
+            Player.res = -1
+        elif (Player.attack == 'magic'):
+            Player.dmg = Player.atk
+            enemy.res = 0
+    elif (enemy.attack == 'magic'):
+        enemy.dmg = enemy.atk
+        enemy.res = 0
+        if (Player.attack == 'attack'):
+            Player.dmg = Player.atk +1
+            Player.res = -1
+        elif (Player.attack == 'defense'):
+            Player.dmg = Player.atk -1
+            Player.res = +1

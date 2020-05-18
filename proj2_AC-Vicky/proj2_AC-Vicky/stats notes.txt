@@ -1,0 +1,36 @@
+MAIN CLASS STRUCTURE
+
+WHAT IT DO
+	generates, organizes and stores player info
+	could be possibly helpful if there is intent to do a local multiplayer thing (i used to know how to do this if there's any interest in trying it out -v)
+
+global variables:
+	hp, baseAttack, chapter, level, xp = 10, 3, 1, 1, 0
+
+global inventory:
+	dictionary with [name, quantity]
+
+control dictionary:
+	special keys unlocked (keep chapter here? + level)
+
+save method
+	gamestate save
+
+properties & types
+	int
+		hp
+		base
+		chapter
+		level
+		xp
+	str
+		player_name
+	dict
+		inventory //public
+		keys //for controlling possible storylines (useless if only c1?)
+
+behaviors & desc
+	xp_gain() - xp = xp + enemy_xp; checks if max for level reached, triggers levelup()
+	levelup() - level +=1, hp +=X, base +=X
+
+if gamestate save will exist then sql integration might be a good idea? (i only know how to do gamestate saves for databases, sorry -v)
