@@ -8,7 +8,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((640,480))
 background = pygame.Surface(screen.get_size())
-background.fill((255,255,255))
+background.fill((17,143,139))
 background = background.convert()
 
 screen.blit(background, (0,0))
