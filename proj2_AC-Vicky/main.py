@@ -3,5 +3,7 @@ import os
 import stats
 import enemies
 import random
+import combatscreen
 
-enemies.combat('gnome', 'no')
+enemy = Enemy('goblin', 'no')
+combatscreen

@@ -81,12 +81,10 @@ while running:
                 if posi > 1:
                     ypos = ypos - 50
                     posi = posi - 1
-                    print(posi)
             elif event.key == pg.K_RETURN:
-                print(posi)
-                h = enemies.combat('goblin', 'no', posi)
-                healthp =  h[0]
-                healthe =  h[1]
+                h = enemies.combat("goblin", "no", posi)
+                healthp = h[0]
+                healthe = h[1]
                 textp = font.render("Player: {0}".format(healthp), True, [0, 0, 0])
                 texte = font.render("{0}: {1}".format(enem.mob, healthe), True, [0, 0, 0])
     box = pg.draw.rect(screen, [249, 228, 183], [0, 300, 640, 213], 0)

@@ -112,14 +112,10 @@ class Enemy(object): #pygame.sprite no pygame
             
 
 #add this to start of combat so that they will reset
-goblin = Enemy('goblin', 'no')
-gnome = Enemy('gnome', 'no')
-slime = Enemy('slime', 'no')
+enemy = Enemy('goblin', 'no')
 
 def combat(enemy_type, boss, posi): #, mob_size to add if necessary
     #generating enemy
-    enemy = Enemy(enemy_type, boss)
-
     #generating each single attack
     #defining enemy attack and player attack
     if enemy_type == 'goblin':
@@ -128,12 +124,12 @@ def combat(enemy_type, boss, posi): #, mob_size to add if necessary
        enemy.gno_ATK()
     elif enemy_type == 'slime':
        enemy.sli_ATK()
-    
-    print(enemy.attack)
 
     #calculate damage, place damage
     enemy.rps(plat.pattack(posi))
     enemy.hp = enemy.hp - (plat.dmg + enemy.res)
     plat.hp = plat.hp - (enemy.dmg + plat.res)
+    print(plat.dmg + enemy.res)
+    print(enemy.dmg + plat.res)
     health = [plat.hp, enemy.hp]
     return health
