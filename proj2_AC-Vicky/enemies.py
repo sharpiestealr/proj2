@@ -7,6 +7,7 @@ class Enemy(object): #pygame.sprite no pygame
     
     def __init__(self, enemy_type, boss): #generates the enemies
         #chooses the enemy class
+        self.enemy_type = enemy_type
         if enemy_type == 'goblin':
             self.hp = 6+2*plat.level
             self.atk = 2+1*plat.level
@@ -116,17 +117,14 @@ goblin = Enemy('goblin', 'no')
 gnome = Enemy('gnome', 'no')
 slime = Enemy('slime', 'no')
 
-def combat(enemy_type, boss, posi): #, mob_size to add if necessary
-    #generating enemy
-    enemy = Enemy(enemy_type, boss)
-
+def combat(enemy, posi): #, mob_size to add if necessary
     #generating each single attack
     #defining enemy attack and player attack
-    if enemy_type == 'goblin':
+    if enemy.enemy_type == 'goblin':
        enemy.gob_ATK()
-    elif enemy_type == 'gnome':
+    elif enemy.enemy_type == 'gnome':
        enemy.gno_ATK()
-    elif enemy_type == 'slime':
+    elif enemy.enemy_type == 'slime':
        enemy.sli_ATK()
     
     print(enemy.attack)
