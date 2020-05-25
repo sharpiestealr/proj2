@@ -1,5 +1,10 @@
 import pygame as pg
 import os
+import stats
+import enemies
+
+plat = stats.Player()
+enem = enemies.Enemy('goblin', 'no')
 
 #importing sprite folders
 current_path = os.path.dirname(__file__)
@@ -25,21 +30,29 @@ text1 = font.render('Attack', True, [0, 0, 0])
 text2 = font.render('Defense', True, [0, 0, 0])
 text3 = font.render("Magic", True, [0, 0, 0])
 textc = font.render("Choose an action", True, [0, 0, 0])
+textp = font.render("Player: {0}".format(plat.hp), True, [0, 0, 0])
+texte = font.render("{0}: {1}".format(enem.mob, enem.hp), True, [0, 0, 0])
 
 text1Rect = text1.get_rect()
 text2Rect = text2.get_rect()
 text3Rect = text3.get_rect()
 textcRect = textc.get_rect()
+textpRect = textp.get_rect()
+texteRect = texte.get_rect()
 
 text1Rect.center = (540, 340)
 text2Rect.center = (540, 390)
 text3Rect.center = (540, 440)
 textcRect.center = (320, 390)
+textpRect.center = (100, 340)
+texteRect.center = (100, 390)
 
 screen.blit(text1, text1Rect)
 screen.blit(text2, text2Rect)
 screen.blit(text3, text3Rect)
 screen.blit(textc, textcRect)
+screen.blit(textp, textpRect)
+screen.blit(texte, texteRect)
 pg.display.update()
 
 #creating cursor for choice
@@ -63,14 +76,25 @@ while running:
                 if posi < 3:
                     ypos = ypos + 50
                     posi = posi + 1
+                    print(posi)
             elif event.key == pg.K_UP:
                 if posi > 1:
                     ypos = ypos - 50
                     posi = posi - 1
+                    print(posi)
+            elif event.key == pg.K_RETURN:
+                print(posi)
+                h = enemies.combat('goblin', 'no', posi)
+                healthp =  h[0]
+                healthe =  h[1]
+                textp = font.render("Player: {0}".format(healthp), True, [0, 0, 0])
+                texte = font.render("{0}: {1}".format(enem.mob, healthe), True, [0, 0, 0])
     box = pg.draw.rect(screen, [249, 228, 183], [0, 300, 640, 213], 0)
     screen.blit(text1, text1Rect)
     screen.blit(text2, text2Rect)
     screen.blit(text3, text3Rect)
     screen.blit(textc, textcRect)
+    screen.blit(textp, textpRect)
+    screen.blit(texte, texteRect)
     choice = pg.draw.circle(screen, [0, 0, 0], [470, ypos], 9)
     pg.display.update()

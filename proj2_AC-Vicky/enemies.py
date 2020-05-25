@@ -12,16 +12,19 @@ class Enemy(object): #pygame.sprite no pygame
             self.atk = 2+1*plat.level
             self.df = 2+1*plat.level
             self.xp = 5+2*plat.level
+            self.mob = "Goblin"
         elif enemy_type == 'gnome':
             self.hp = 5+2*plat.level
             self.atk = 2+1*plat.level
             self.df = 3+2*plat.level
             self.xp = 4+2*plat.level
+            self.mob = "Gnome"
         elif enemy_type == 'slime':
             self.hp = 8+2*plat.level
             self.atk = 2+1*plat.level
             self.df = 2+2*plat.level
             self.xp = 6+2*plat.level
+            self.mob = "Slime"
         #checks if enemy has boss factor
         if boss == 'yes':
             self.hp = self.hp*2
@@ -113,41 +116,24 @@ goblin = Enemy('goblin', 'no')
 gnome = Enemy('gnome', 'no')
 slime = Enemy('slime', 'no')
 
-def combat(enemy_type, boss): #, mob_size to add if necessary
+def combat(enemy_type, boss, posi): #, mob_size to add if necessary
     #generating enemy
     enemy = Enemy(enemy_type, boss)
 
-    #generating player death key
-    key = 0
-
     #generating each single attack
-    while enemy.hp > 0:
-        #0, 1: defining enemy attack and player attack
-        if enemy_type == 'goblin':
-            enemy.gob_ATK()
-        elif enemy_type == 'gnome':
-            enemy.gno_ATK()
-        elif enemy_type == 'slime':
-            enemy.sli_ATK()
-
-        player_choice = plat.pattack()
-
-        #steps 2, 3 don't actually exist (yet, may never)
-        #4, 5: calculate damage, place damage
-        enemy.rps(player_choice)
-        enemy.hp = enemy.hp - (plat.dmg + enemy.res)
-        plat.hp = plat.hp - (enemy.dmg + plat.res)
-        
-        #checking for player death
-        if plat.hp < 0:
-            print("You lost")
-            key = 1
-            break
-        #steps 6, 7 don't actually exist (yet, may never)
-        #steps 8, 9, 10 are redundant because of while-loop
+    #defining enemy attack and player attack
+    if enemy_type == 'goblin':
+       enemy.gob_ATK()
+    elif enemy_type == 'gnome':
+       enemy.gno_ATK()
+    elif enemy_type == 'slime':
+       enemy.sli_ATK()
     
-    #checking for player victory
-    if key != 1:
-        print("You have defeated the enemy")
-        plat.xp = plat.xp + enemy.xp
-        plat.lvl_up()
+    print(enemy.attack)
+
+    #calculate damage, place damage
+    enemy.rps(plat.pattack(posi))
+    enemy.hp = enemy.hp - (plat.dmg + enemy.res)
+    plat.hp = plat.hp - (enemy.dmg + plat.res)
+    health = [plat.hp, enemy.hp]
+    return health

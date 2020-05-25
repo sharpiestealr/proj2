@@ -3,7 +3,7 @@ class Player:
         #player stats
     
     def __init__(self):
-        self.name = input("What's your name, adventurer? ")  
+        #self.name = input("What's your name, adventurer? ")  
         self.level = 1
         self.hp = 10+2*self.level
         self.atk = 3+1*self.level
@@ -14,10 +14,15 @@ class Player:
 
         #combat variables
         self.dmg = 0
-        self.res = 0
+        self.res = 0        
     
-    def pattack(self):
-        self.action = input("Choose between attack, defense or magic, {0} ".format(self.name))
+    def pattack(self, posi):
+        if posi == 1:
+            self.action = "attack"
+        elif posi == 2:
+            self.action = "defense"
+        else:
+            self.action = "magic"
 
     #check lvl up post combat
     def lvl_up(self):
