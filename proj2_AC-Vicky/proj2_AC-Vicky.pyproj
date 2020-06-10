@@ -30,6 +30,9 @@
     <Compile Include="stats.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="cave screen 1.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="notes\enemy notes.txt" />
