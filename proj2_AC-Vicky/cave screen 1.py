@@ -9,10 +9,10 @@ image_path = os.path.join(current_path, 'sprites')
 pygame.init()
 
 #setting screen size
-screen = pygame.display.set_mode((1920,1080))
+screen = pygame.display.set_mode((1280,720))
 
 #setting scenery and static objects
-background = pygame.image.load(os.path.join(image_patg, "walk.jpeg"))
+background = pygame.image.load(os.path.join(image_patg, "walk.jpg"))
 screen.blit(background, (0,0))
 
 ledge = pygame.image.load(os.path.join(image_path, "ledge.png"))
