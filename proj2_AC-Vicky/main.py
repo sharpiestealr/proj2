@@ -3,7 +3,16 @@ import os
 import stats
 import enemies
 import random
-import combatscreen
+import combat
+import cave
+import chest
+import key
+import hallway
+import doors
+import puzzle
+import final
 
-enemy = Enemy('goblin', 'no')
-combatscreen
+cave
+
+#enemy = Enemy('goblin', 'no')
+#combat

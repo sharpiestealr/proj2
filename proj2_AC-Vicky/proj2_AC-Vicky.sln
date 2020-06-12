@@ -7,10 +7,12 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "proj2_AC-Vicky", "proj2_AC-
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Build|Any CPU = Build|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EE453D05-1552-42F7-9449-3CAAB02EC18B}.Build|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE453D05-1552-42F7-9449-3CAAB02EC18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE453D05-1552-42F7-9449-3CAAB02EC18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection

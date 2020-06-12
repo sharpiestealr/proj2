@@ -10,7 +10,14 @@ class Player:
         self.df = 3+1*self.level
         self.xp = 0
         self.threshold = 10
+        
+        #check variables
         self.chapter = 1
+        self.room = "opening" #used to control the boss factor
+        self.coins = 0
+        self.door = 0 #only becomes 1 to enter door, entering new room wipes this
+        self.key = 0 #key check
+        self.potion = 0 #potion check
 
         #combat variables
         self.dmg = 0
@@ -31,5 +38,3 @@ class Player:
             self.level = self.level + 1
             self.threshold = self.threshold*2
             print("Congratulations! You leveled up!")
-
-
