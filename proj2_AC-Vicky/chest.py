@@ -3,9 +3,11 @@ import os
 import stats
 import enemies
 import combat
+import cave
 
 plat = stats.Player()
-plat.room = "cave"
+plat.door = 0
+plat.room = "chest"
 
 #this is the walk screen for THE FIRST CAVE BEFORE THE PUZZLE
 
@@ -18,81 +20,46 @@ pygame.init()
 screen = pygame.display.set_mode((1280,720))
 
 #setting scenery and static objects
-background = pygame.image.load(os.path.join(image_path, "walk.jpg"))
+background = pygame.image.load(os.path.join(image_path, "chest.jpg"))
 screen.blit(background, (0,0))
 
-ledge = pygame.image.load(os.path.join(image_path, "ledge.png"))
-x = 442
-y = 368
-ledge_info = ["ledge", x, y]
-screen.blit(ledge, (x,y))
-
-hill = pygame.image.load(os.path.join(image_path, "hill.png"))
-w = 974
-h = 224
-hill_info = ["hill", w, h]
-screen.blit(hill, (w, h))
-
-edoor = pygame.image.load(os.path.join(image_path, "door.png"))
-lm = 1230
-lM = lm + edoor.get_width()
-pm = 605
-pM = pm + edoor.get_height()
-edoor_info = ["exit", lm, pm, lM, pM]
-screen.blit(door, (lm, pm))
-
-    #pdoor is puzzle door, no extra sprite for it
-am = 1082
-aM = 1280
+    #chest exit is just "the way you came from" aka the left side
+am = 0
+aM = 20
 bm = 0
-bM = 224
-pdoor_info = ["puzzle", am, bm, aM, bM]
+bM = 720
+exit_info = ["exit", am, bm, aM, bM]
 
-    #idoor is entry door, no extra sprite either
-cm = 0
-cM = 95
-dm = 378
-dM = 605
-idoor_info = ["entry", cm, dm, cM, dM]
+    #chest object isn't a real asset here because i was dumb and lazy sorry -v
+cm = 660
+cM = 932
+dm = 237
+dM = 461
+chest_info = ["chest", cm, bm, aM, bM]
 
 #setting non-static layers
 #setting player (note that player does not currently have art, will use stand-in image)
 player = pygame.image.load(os.path.join(image_path,"player.png"))
 xpos = 100
-ypos = 605
+ypos = 446
 step_x = 30
 step_y = 100
 player_coord = [player, xpos, ypos]
 screen.blit(player, (xpos, ypos))
 
-#setting enemy (neither each class nor overworld enemy final art exist yet)
-overworld = pygame.image.load(os.path.join(image_path,"slime mockup.png"))
-wpos = 1080
-hpos = 635
-step = 10
-overworld_info = ["enemy", wpos, hpos]
-screen.blit(overworld, (wpos, hpos))
-
-#setting coin
-coin = pygame.image.load(os.path.join(image_path, "coin.png"))
-lpos = 504
-ppos = 234
-coin_info = ["coin", lpos, ppos]
-screen.blit(coin, (lpos, ppos))
-
 pygame.display.update()
-
-transparent = (0, 0, 0, 0)
 
 def gamestate_checks(player_info):
 
     #colliders
-    player_info = collision(player_info, ledge_info)
-    player_info = collision(player_info, hill_info)
-    player_info = collision(player_info, overworld_info)
-    player_info = collision(player_info, coin_info)
-    player_info = collision(player_info, edoor_info)
-    player_info = collision(player_info, pdoor_info)
+    player_info = collision(player_info, chest_info)
+    
+    #door checks
+    player_info = collision(player_info, exit_info)
+    
+    #checks which door to send to right room
+    if plat.door == 1:
+        cave
 
     return player_info
 
@@ -112,18 +79,8 @@ def collision (player_info, object_info):
     
     #finding how to proceed based off of what object it is
     #this generally means finding accurate dimensions for things
-    if collider == "ledge":
-        xM = x + ledge.get_width()
-        yM = y + ledge.get_height()
-    elif collider == "hill":
-        xM = x + hill.get_width()
-        yM = y + hill.get_height()
-    elif collider == "enemy":
+    if collider == "chest":
         combat
-    elif collider == "coin":
-        #play kaching sound?
-        plat.coins = plat.coins + 1
-        coin.fill(transparent)
     else:
         at_door(player_info)
         return plat.door
@@ -167,12 +124,18 @@ def at_door (player_info, door_info):
         #print message prompting to interact with door
         print("Press X to enter.")
         if event.key == pygame.X:
-            plat.door = 1
+            if door == "exit":
+                plat.door = 1
+            else:
+                plat.door = 2
         #proxy message while we don't actually get the things done
     elif (pxM in range (dxm, dxM)):
         print("Press X to enter.")
         if event.key == pygame.X:
-            plat.door = 1
+            if door == "exit":
+                plat.door = 1
+            else:
+                plat.door = 2
     
     return plat.door
     
@@ -190,24 +153,22 @@ while running:
                 while event.key == pygame.K_DOWN:
                     ypos = ypos + step_y
                     gamestate_checks(player_coords)
+
             elif event.key == pygame.K_UP:
                 while event.key == pygame.K_UP:
                     ypos = ypos - step_y
                     gamestate_checks(player_coords)
+
             elif event.key == pygame.K_RIGHT:
                 while event.key == pygame.K_RIGHT:
                     xpos = xpos + step_x
                     gamestate_checks(player_coords)
+
             elif event.key == pygame.K_LEFT:
                 while event.key == pygame.K_LEFT:
                     xpos = xpos - step_x
                     gamestate_checks(player_coords)
 
     screen.blit(background, (0,0))
-    screen.blit(ledge, (x, y))
-    screen.blit(hill, (w, h))
-    screen.blit(overworld, (wpos, hpos))
-    screen.blit(coin, (lpos, ppos))
-    screen.blit(edoor, (lm,pm))
     screen.blit(player, (xpos, ypos))
     pygame.display.update()
