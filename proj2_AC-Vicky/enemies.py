@@ -129,7 +129,5 @@ def combat(enemy_type, boss, posi): #, mob_size to add if necessary
     enemy.rps(plat.pattack(posi))
     enemy.hp = enemy.hp - (plat.dmg + enemy.res)
     plat.hp = plat.hp - (enemy.dmg + plat.res)
-    print(plat.dmg + enemy.res)
-    print(enemy.dmg + plat.res)
     health = [plat.hp, enemy.hp]
     return health
