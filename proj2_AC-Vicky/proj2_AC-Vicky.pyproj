@@ -48,7 +48,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
-    <Compile Include="key.py">
+    <Compile Include="key_room.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="puzzle.py">

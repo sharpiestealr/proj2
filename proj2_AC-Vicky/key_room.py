@@ -3,11 +3,12 @@ import os
 import stats
 import enemies
 import combat
-import chest
-import key_room
+import cave
+import hallway
 
 plat = stats.Player()
-plat.room = "cave"
+plat.room = "key"
+plat.door = 0
 
 #this is the walk screen for THE FIRST CAVE BEFORE THE PUZZLE
 
@@ -20,48 +21,41 @@ pygame.init()
 screen = pygame.display.set_mode((1280,720))
 
 #setting scenery and static objects
-background = pygame.image.load(os.path.join(image_path, "walk.jpg"))
+background = pygame.image.load(os.path.join(image_path, "keybg.jpg"))
 screen.blit(background, (0,0))
 
 ledge = pygame.image.load(os.path.join(image_path, "ledge.png"))
-x = 442
-y = 368
+x = 250
+y = 225
 ledge_info = ["ledge", x, y]
 screen.blit(ledge, (x,y))
 
-hill = pygame.image.load(os.path.join(image_path, "hill.png"))
-w = 974
-h = 224
-hill_info = ["hill", w, h]
+long = pygame.image.load(os.path.join(image_path, "long.png"))
+w = 522
+h = 410
+hill_info = ["long", w, h]
 screen.blit(hill, (w, h))
 
 edoor = pygame.image.load(os.path.join(image_path, "door.png"))
-lm = 1230
+lm = 1228
 lM = lm + edoor.get_width()
-pm = 605
+pm = 600
 pM = pm + edoor.get_height()
 edoor_info = ["exit", lm, pm, lM, pM]
 screen.blit(door, (lm, pm))
 
-    #pdoor is puzzle door, no extra sprite for it
-am = 1082
-aM = 1280
-bm = 0
-bM = 224
-pdoor_info = ["puzzle", am, bm, aM, bM]
-
-    #idoor is entry door, no extra sprite either
+    #idoor is the entry back into cave, no sprite
 cm = 0
-cM = 95
-dm = 378
-dM = 605
+cM = 20
+dm = 0
+dM = 720
 idoor_info = ["entry", cm, dm, cM, dM]
 
 #setting non-static layers
 #setting player (note that player does not currently have art, will use stand-in image)
 player = pygame.image.load(os.path.join(image_path,"player.png"))
 xpos = 100
-ypos = 605
+ypos = 600
 step_x = 30
 step_y = 100
 player_coord = [player, xpos, ypos]
@@ -75,8 +69,8 @@ step = 10
 overworld_info = ["enemy", wpos, hpos]
 screen.blit(overworld, (wpos, hpos))
 
-#setting coin
-coin = pygame.image.load(os.path.join(image_path, "coin.png"))
+#setting key
+key = pygame.image.load(os.path.join(image_path, "key.png"))
 lpos = 504
 ppos = 234
 coin_info = ["coin", lpos, ppos]
@@ -101,7 +95,7 @@ def gamestate_checks(player_info):
     
     #checks which door to send to right room
     if plat.door == 1:
-        key_room
+        key
     elif plat.door == 2:
         chest
 

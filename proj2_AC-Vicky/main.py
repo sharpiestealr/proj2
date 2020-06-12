@@ -6,7 +6,7 @@ import random
 import combat
 import cave
 import chest
-import key
+import key_room
 import hallway
 import doors
 import puzzle
@@ -17,4 +17,4 @@ import credits
 #new game prompts to player creation
 #have title pull into cave
 cave
-#no need to pull into other files because cave pulls into chest and key, which will pull the next ones
+#no need to pull into other files because cave pulls into chest and key, which will pull the next ones  
