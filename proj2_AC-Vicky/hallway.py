@@ -25,17 +25,17 @@ background = pygame.image.load(os.path.join(image_path, "hallway.jpg"))
 screen.blit(background, (0,0))
 
     # here edoor isn't an asset
-lm = 1228
-lM = lm
-pm = 600
-pM = pm
+lm = 1232
+lM = 1280
+pm = 320
+pM = 623
 edoor_info = ["exit", lm, pm, lM, pM]
 
     #idoor is the entry back into cave, no sprite
 cm = 0
-cM = 20
-dm = 0
-dM = 720
+cM = 110
+dm = 340
+dM = 623
 idoor_info = ["entry", cm, dm, cM, dM]
 
 #setting non-static layers
@@ -63,7 +63,7 @@ transparent = (0, 0, 0, 0)
 def gamestate_checks(player_info):
 
     #colliders
-   player_info = collision(player_info, overworld_info)
+    player_info = collision(player_info, overworld_info)
     
     #door checks
     while plat.door == 0:

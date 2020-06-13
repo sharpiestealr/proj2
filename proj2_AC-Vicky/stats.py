@@ -17,7 +17,8 @@ class Player:
         self.coins = 0
         self.door = 0 #only becomes 1 to enter door, entering new room wipes this
         self.key = 0 #key check
-        self.potion = 0 #potion check
+        self.potion = 0 #potion inventory
+        self.solved = 0 #check if puzzle is solved
 
         #combat variables
         self.dmg = 0

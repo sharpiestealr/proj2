@@ -64,7 +64,7 @@ screen.blit(player, (xpos, ypos))
 #setting enemy (neither each class nor overworld enemy final art exist yet)
 overworld = pygame.image.load(os.path.join(image_path,"slime mockup.png"))
 wpos = 1080
-hpos = 635
+hpos = ypos
 step = 10
 overworld_info = ["enemy", wpos, hpos]
 screen.blit(overworld, (wpos, hpos))
