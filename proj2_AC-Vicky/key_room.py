@@ -73,8 +73,9 @@ screen.blit(overworld, (wpos, hpos))
 key = pygame.image.load(os.path.join(image_path, "key.png"))
 lpos = 504
 ppos = 234
-coin_info = ["coin", lpos, ppos]
-screen.blit(coin, (lpos, ppos))
+key_info = ["key", lpos, ppos]
+if plat.key == 0:
+    screen.blit(key, (lpos, ppos))
 
 pygame.display.update()
 
@@ -84,20 +85,21 @@ def gamestate_checks(player_info):
 
     #colliders
     player_info = collision(player_info, ledge_info)
-    player_info = collision(player_info, hill_info)
+    player_info = collision(player_info, long_info)
     player_info = collision(player_info, overworld_info)
-    player_info = collision(player_info, coin_info)
+    if plat.key == 0:
+        player_info = collision(player_info, key_info)
     
     #door checks
     while plat.door == 0:
         player_info = collision(player_info, edoor_info)
-        player_info = collision(player_info, pdoor_info)
+        player_info = collision(player_info, idoor_info)
     
     #checks which door to send to right room
     if plat.door == 1:
-        key
+        hallway
     elif plat.door == 2:
-        chest
+        cave
 
     return player_info
 
@@ -120,15 +122,15 @@ def collision (player_info, object_info):
     if collider == "ledge":
         xM = x + ledge.get_width()
         yM = y + ledge.get_height()
-    elif collider == "hill":
-        xM = x + hill.get_width()
-        yM = y + hill.get_height()
+    elif collider == "long":
+        xM = x + long.get_width()
+        yM = y + long.get_height()
     elif collider == "enemy":
         combat
-    elif collider == "coin":
+    elif collider == "key":
         #play kaching sound?
-        plat.coins = plat.coins + 1
-        coin.fill(transparent)
+        plat.key = plat.key + 1
+        key.fill(transparent)
     else:
         at_door(player_info)
         return plat.door
@@ -219,9 +221,9 @@ while running:
 
     screen.blit(background, (0,0))
     screen.blit(ledge, (x, y))
-    screen.blit(hill, (w, h))
+    screen.blit(long, (w, h))
     screen.blit(overworld, (wpos, hpos))
-    screen.blit(coin, (lpos, ppos))
+    screen.blit(key, (lpos, ppos))
     screen.blit(edoor, (lm,pm))
     screen.blit(player, (xpos, ypos))
     pygame.display.update()
