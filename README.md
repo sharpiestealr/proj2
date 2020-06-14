@@ -3,6 +3,7 @@
 
 título do jogo
 <pending>
+immortal man /tentativo, não oficial
 
 integrantes do grupo
 ana carolina souza
