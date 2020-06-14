@@ -109,7 +109,21 @@ all_sprites.draw(screen)
 pygame.display.flip()
 
 transparent = (0, 0, 0, 0)
+
+def falling(py):
     
+    fy = 605 #relocates floor, defaults to cave floor
+
+    if ((player.y+5 > ledge.rect.y > player.y-5) and (player.x+5 > ledge.rect.x > player.x-5)):
+        fy = ledge.rect.y
+    elif ((player.y+5 > hill.rect.y > player.y-5) and (player.x+5 > hill.rect.x > player.x-5)):
+        fy = hill.rect.y
+
+    while (py < fy):
+        py -= 15
+
+    return py
+
 running = True
 
 while running:
@@ -133,6 +147,7 @@ while running:
            player.y -= (player.jumpCount * abs(player.jumpCount)) * 0.5
            player.jumpCount -= 1
         else: # This will execute if our jump is finished
+           player.y = falling(player.y)
            player.jumpCount = 11
            player.isJump = False
            # Resetting our Variables
