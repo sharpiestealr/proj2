@@ -21,12 +21,15 @@ x = 442
 y = 368
 ledge_info = ["ledge", x, y]
 screen.blit(ledge, (x,y))
+ledge_hitbox = ledge.get_rect()
+
 
 hill = pygame.image.load(os.path.join(image_path, "hill.png"))
 w = 974
 h = 224
 hill_info = ["hill", w, h]
 screen.blit(hill, (w, h))
+hill_hitbox = hill.get_rect()
 
 edoor = pygame.image.load(os.path.join(image_path, "door.png"))
 lm = 1230
@@ -61,6 +64,7 @@ isJump = False
 jumpCount = 11
 player_coord = [player, xpos, ypos]
 screen.blit(player, (xpos, ypos))
+player_hitbox = player.get_rect()
 
 #setting enemy
 #neither each class nor overworld enemy art exist yet
@@ -70,6 +74,7 @@ hpos = 405
 step = 10
 overworld_info = ["enemy", wpos, hpos]
 screen.blit(overworld, (wpos, hpos))
+overworld_hitbox = player.get_rect()
 
 #setting coin
 coin = pygame.image.load(os.path.join(image_path, "coin.png"))
@@ -77,6 +82,7 @@ lpos = 514
 ppos = 234
 coin_info = ["coin", lpos, ppos]
 screen.blit(coin, (lpos, ppos))
+coin_hitbox = player.get_rect()
 
 pygame.display.update()
 
@@ -109,16 +115,23 @@ while running:
            isJump = False
            # Resetting our Variables
 
-    if keys[pygame.K_RIGHT] and xpos < 1200 - hill.get_width():
+    if keys[pygame.K_RIGHT] and xpos < 1100:
         xpos = xpos + step_x
        
     if keys[pygame.K_LEFT] and xpos > 100:
        xpos = xpos - step_x
 
+    hit_ledge = pygame.sprite.collide_rect(player_hitbox, ledge_hitbox)
+
+    if hit_ledge:
+        ypos = 368
+
     screen.blit(background, (0,0))
     screen.blit(ledge, (x, y))
     screen.blit(hill, (w, h))
     screen.blit(overworld, (wpos, hpos))
+    overworld_hitbox = overworld.get_rect()
     screen.blit(player, (xpos, ypos))
+    player_hitbox = player.get_rect()
     screen.blit(coin, (lpos, ppos))
     pygame.display.update()
