@@ -1,6 +1,9 @@
 import pygame
 import os
+import stats
 #import combat
+
+plat = stats.Player()
 
 #this is the walk screen for THE FIRST CAVE BEFORE THE PUZZLE
 
@@ -15,8 +18,10 @@ screen = pygame.display.set_mode((1280,720))
 #setting scenery and static objects
 background = pygame.image.load(os.path.join(image_path, "walk.jpg"))
 screen.blit(background, (0,0))
+
 all_sprites = pygame.sprite.Group()
 cenario = pygame.sprite.Group()
+item = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 enemy_group = pygame.sprite.Group()
 
@@ -45,7 +50,7 @@ class EDoor(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
     def update(self):
         self.rect.x = 1230
-        self.rect.y = 605
+        self.rect.y = 620 - self.image.get_height()
 
 class Player_s(pygame.sprite.Sprite):
     def __init__(self):
@@ -54,12 +59,11 @@ class Player_s(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = 100
         self.y = 405
-        self.right = False
-        self.left = False
         self.step_x = 30
         self.step_y = 230
         self.isJump = False
         self.jumpCount = 11
+        self.gravity = 1
     def update(self):
         self.rect.x = self.x
         self.rect.y = self.y
@@ -73,7 +77,6 @@ class Enemy_s(pygame.sprite.Sprite):
     def update(self):
         self.rect.x = 780
         self.rect.y = 405
-
 
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
@@ -100,7 +103,7 @@ all_sprites.add(coin)
 cenario.add(ledge)
 cenario.add(hill)
 cenario.add(edoor)
-cenario.add(coin)
+item.add(coin)
 player_group.add(player)
 enemy_group.add(enemy)
 
@@ -137,12 +140,29 @@ while running:
            player.isJump = False
            # Resetting our Variables
 
-    if keys[pygame.K_RIGHT] and player.x < 1100:
+    if keys[pygame.K_RIGHT] and player.x < 1150:
         player.x = player.x + player.step_x
        
     if keys[pygame.K_LEFT] and player.x > 100:
        player.x = player.x - player.step_x
 
+    hit_ledge = pygame.sprite.spritecollide(player, cenario, False)
+
+    if hit_ledge and player.isJump:
+        player.y = ledge.rect.y-player.image.get_height()
+        player.jumpCount = 11
+        player.isJump = False
+    
+    hit_coin = pygame.sprite.spritecollide(player, item, True)
+
+    if hit_coin:
+        plat.coins += 1
+    
+    hit_enemy = pygame.sprite.spritecollide(player, enemy_group, True)
+
+    if hit_enemy:
+        import combat
+        
     screen.blit(background, (0,0))
     all_sprites.update()
     all_sprites.draw(screen)
