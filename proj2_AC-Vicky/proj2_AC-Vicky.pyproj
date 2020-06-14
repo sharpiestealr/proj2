@@ -26,32 +26,32 @@
     <OutputPath>bin\Build\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="cave.py" />
-    <Compile Include="chest.py">
+    <Compile Include="rooms\cave.py" />
+    <Compile Include="cavescreen1.py" />
+    <Compile Include="rooms\chest.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="combat.py" />
     <Compile Include="credits.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="doors.py">
+    <Compile Include="rooms\doors.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="enemies.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="corgi test.py" />
-    <Compile Include="final.py">
+    <Compile Include="rooms\final.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="hallway.py">
+    <Compile Include="rooms\hallway.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
-    <Compile Include="key_room.py">
+    <Compile Include="rooms\key_room.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="puzzle.py">
+    <Compile Include="rooms\puzzle.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="stats.py">
@@ -65,6 +65,7 @@
     <Content Include="notes\story notes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="rooms\" />
     <Folder Include="notes\" />
   </ItemGroup>
   <ItemGroup>

@@ -50,7 +50,7 @@ class EDoor(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
     def update(self):
         self.rect.x = 1230
-        self.rect.y = 620 - self.image.get_height()
+        self.y = 605-self.image.get_height()
 
 class Player_s(pygame.sprite.Sprite):
     def __init__(self):
@@ -58,7 +58,7 @@ class Player_s(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join(image_path, "player.png"))
         self.rect = self.image.get_rect()
         self.x = 100
-        self.y = 405
+        self.y = 605-self.image.get_height()
         self.step_x = 30
         self.step_y = 230
         self.isJump = False
@@ -76,7 +76,7 @@ class Enemy_s(pygame.sprite.Sprite):
         self.step = 10
     def update(self):
         self.rect.x = 780
-        self.rect.y = 405
+        self.y = 605-self.image.get_height()
 
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
@@ -152,7 +152,9 @@ while running:
         player.y = ledge.rect.y-player.image.get_height()
         player.jumpCount = 11
         player.isJump = False
-    
+    elif (hit_ledge == False):
+        player.y = 605-player.image.get_height()
+
     hit_coin = pygame.sprite.spritecollide(player, item, True)
 
     if hit_coin:
