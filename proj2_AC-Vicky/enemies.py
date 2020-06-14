@@ -4,7 +4,7 @@ plat = stats.Player()
 
 class Enemy(object): #pygame.sprite no pygame
     """a place to create enemy variables, generate enemies and combats"""
-
+    
     def __init__(self, enemy_type, boss): #generates the enemies
         #chooses the enemy class
         if enemy_type == 'goblin':
@@ -109,6 +109,10 @@ class Enemy(object): #pygame.sprite no pygame
             elif (self.attack == 'defense'):
                 self.dmg = self.atk -1
                 self.res = -1
+            
+
+#add this to start of combat so that they will reset
+enemy = Enemy('goblin', 'no')
 
 def combat(enemy_type, boss, posi): #, mob_size to add if necessary
     #generating enemy

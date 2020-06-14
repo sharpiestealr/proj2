@@ -2,24 +2,21 @@ import pygame as pg
 import os
 import stats
 import enemies
+import random
 
 #determining player and enemy stats
 plat = stats.Player()
-enem = enemies.Enemy('goblin', 'no')
 enem_gen = random.randint(0,3)
-boss = 'no'
-if plat.room == "final":
-    boss = 'yes'
 if enem_gen == 1:
-    enem = enemies.Enemy('goblin', boss)
+    enem = enemies.Enemy('goblin', 'no')
     enem_sprite = "goblin mockup.png"
     enem_name = "goblin"
 elif enem_gen == 2:
-    enem = enemies.Enemy('gnome', boss)
+    enem = enemies.Enemy('gnome', 'no')
     enem_sprite = "gnome mockup.png"
     enem_name = "gnome"
 else:
-    enem = enemies.Enemy('slime', boss)
+    enem = enemies.Enemy('slime', 'no')
     enem_sprite = "slime mockup.png"
     enem_name = "slime"
 
@@ -128,14 +125,13 @@ while running:
                 
     if result == 1:
         result_text = font.render('Victory!', True, [0, 0, 0],[249,228, 183])
-        plat.coins = plat.coins + 1
         resultRect = result_text.get_rect()
-        resultRect.center = (1280, 720)
+        resultRect.center = (640, 360)
         screen.blit(result_text, resultRect)
     elif result == 2:
         result_text = font.render('Lost!', True, [0, 0, 0],[249,228, 183])
         resultRect = result_text.get_rect()
-        resultRect.center = (1280, 720)
+        resultRect.center = (640, 360)
         screen.blit(result_text, resultRect)     
 
     box = pg.draw.rect(screen, [249, 228, 183], [0, 500, 1280, 213], 0)
