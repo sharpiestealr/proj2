@@ -15,76 +15,98 @@ screen = pygame.display.set_mode((1280,720))
 #setting scenery and static objects
 background = pygame.image.load(os.path.join(image_path, "walk.jpg"))
 screen.blit(background, (0,0))
+all_sprites = pygame.sprite.Group()
+cenario = pygame.sprite.Group()
+player_group = pygame.sprite.Group()
+enemy_group = pygame.sprite.Group()
 
-ledge = pygame.image.load(os.path.join(image_path, "ledge.png"))
-x = 442
-y = 368
-ledge_info = ["ledge", x, y]
-screen.blit(ledge, (x,y))
-ledge_hitbox = ledge.get_rect()
+class Ledge(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(image_path, "ledge.png"))
+        self.rect = self.image.get_rect()        
+    def update(self):
+        self.rect.x = 442
+        self.rect.y = 368
+
+class Hill(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(image_path, "hill.png"))
+        self.rect = self.image.get_rect()
+    def update(self):
+        self.rect.x = 974
+        self.rect.y = 224
+
+class EDoor(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(image_path, "door.png"))
+        self.rect = self.image.get_rect()
+    def update(self):
+        self.rect.x = 1230
+        self.rect.y = 605
+
+class Player_s(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(image_path, "player.png"))
+        self.rect = self.image.get_rect()
+        self.x = 100
+        self.y = 405
+        self.right = False
+        self.left = False
+        self.step_x = 30
+        self.step_y = 230
+        self.isJump = False
+        self.jumpCount = 11
+    def update(self):
+        self.rect.x = self.x
+        self.rect.y = self.y
+
+class Enemy_s(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(image_path, "slime mockup.png"))
+        self.rect = self.image.get_rect()
+        self.step = 10
+    def update(self):
+        self.rect.x = 780
+        self.rect.y = 405
 
 
-hill = pygame.image.load(os.path.join(image_path, "hill.png"))
-w = 974
-h = 224
-hill_info = ["hill", w, h]
-screen.blit(hill, (w, h))
-hill_hitbox = hill.get_rect()
+class Coin(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(image_path, "coin.png"))
+        self.rect = self.image.get_rect()
+    def update(self):
+        self.rect.x = 514
+        self.rect.y = 243
 
-edoor = pygame.image.load(os.path.join(image_path, "door.png"))
-lm = 1230
-lM = lm + edoor.get_width()
-pm = 605
-pM = pm + edoor.get_height()
-edoor_info = ["exit", lm, pm, lM, pM]
-screen.blit(edoor, (lm, pm))
+ledge = Ledge()
+hill = Hill()
+edoor = EDoor()
+player = Player_s()
+enemy = Enemy_s()
+coin = Coin()
 
-    #pdoor is puzzle door, no extra sprite for it
-am = 1082
-aM = 1280
-bm = 0
-bM = 224
-pdoor_info = ["puzzle", am, bm, aM, bM]
+all_sprites.add(ledge)
+all_sprites.add(hill)
+all_sprites.add(edoor)
+all_sprites.add(player)
+all_sprites.add(enemy)
+all_sprites.add(coin)
+cenario.add(ledge)
+cenario.add(hill)
+cenario.add(edoor)
+cenario.add(coin)
+player_group.add(player)
+enemy_group.add(enemy)
 
-    #idoor is entry door, no extra sprite either
-cm = 0
-cM = 95
-dm = 378
-dM = 605
-idoor_info = ["entry", cm, dm, cM, dM]
-    
-#setting player
-#note that player does not currently have art, will use stand-in image
-player = pygame.image.load(os.path.join(image_path,"player.png"))
-xpos = 100
-ypos = 405
-step_x = 30
-step_y = 230
-isJump = False
-jumpCount = 11
-player_coord = [player, xpos, ypos]
-screen.blit(player, (xpos, ypos))
-player_hitbox = player.get_rect()
-
-#setting enemy
-#neither each class nor overworld enemy art exist yet
-overworld = pygame.image.load(os.path.join(image_path,"slime mockup.png"))
-wpos = 780
-hpos = 405
-step = 10
-overworld_info = ["enemy", wpos, hpos]
-screen.blit(overworld, (wpos, hpos))
-overworld_hitbox = player.get_rect()
-
-#setting coin
-coin = pygame.image.load(os.path.join(image_path, "coin.png"))
-lpos = 514
-ppos = 234
-coin_info = ["coin", lpos, ppos]
-screen.blit(coin, (lpos, ppos))
-coin_hitbox = player.get_rect()
-
-pygame.display.update()
+all_sprites.update()
+all_sprites.draw(screen)
+pygame.display.flip()
 
 transparent = (0, 0, 0, 0)
     
@@ -103,35 +125,25 @@ while running:
         running = False
         break
 
-    if not(isJump):
+    if not(player.isJump):
         if keys[pygame.K_UP]:
-            isJump = True
+            player.isJump = True
     else:
-        if jumpCount >= -11:
-           ypos -= (jumpCount * abs(jumpCount)) * 0.5
-           jumpCount -= 1
+        if player.jumpCount >= -11:
+           player.y -= (player.jumpCount * abs(player.jumpCount)) * 0.5
+           player.jumpCount -= 1
         else: # This will execute if our jump is finished
-           jumpCount = 11
-           isJump = False
+           player.jumpCount = 11
+           player.isJump = False
            # Resetting our Variables
 
-    if keys[pygame.K_RIGHT] and xpos < 1100:
-        xpos = xpos + step_x
+    if keys[pygame.K_RIGHT] and player.x < 1100:
+        player.x = player.x + player.step_x
        
-    if keys[pygame.K_LEFT] and xpos > 100:
-       xpos = xpos - step_x
-
-    hit_ledge = pygame.sprite.collide_rect(player_hitbox, ledge_hitbox)
-
-    if hit_ledge:
-        ypos = 368
+    if keys[pygame.K_LEFT] and player.x > 100:
+       player.x = player.x - player.step_x
 
     screen.blit(background, (0,0))
-    screen.blit(ledge, (x, y))
-    screen.blit(hill, (w, h))
-    screen.blit(overworld, (wpos, hpos))
-    overworld_hitbox = overworld.get_rect()
-    screen.blit(player, (xpos, ypos))
-    player_hitbox = player.get_rect()
-    screen.blit(coin, (lpos, ppos))
-    pygame.display.update()
+    all_sprites.update()
+    all_sprites.draw(screen)
+    pygame.display.flip()
