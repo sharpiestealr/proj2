@@ -13,6 +13,7 @@ class Player:
     enemy_cave = 0
     enemy_hall = 0
     enemy_door = 0
+    enemy_key = 0
     chest = 0 #check if done cave
     x = 0
     y = 0
