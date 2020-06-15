@@ -7,16 +7,21 @@ import random
 #determining player and enemy stats
 plat = stats.Player()
 enem_gen = random.randint(0,3)
+
+boss = 'no'
+if plat.croom == "final":
+        boss = 'yes'
+
 if enem_gen == 1:
-    enem = enemies.Enemy('goblin', 'no')
+    enem = enemies.Enemy('goblin', boss)
     enem_sprite = "goblin mockup.png"
     enem_name = "goblin"
 elif enem_gen == 2:
-    enem = enemies.Enemy('gnome', 'no')
+    enem = enemies.Enemy('gnome', boss)
     enem_sprite = "gnome mockup.png"
     enem_name = "gnome"
 else:
-    enem = enemies.Enemy('slime', 'no')
+    enem = enemies.Enemy('slime', boss)
     enem_sprite = "slime mockup.png"
     enem_name = "slime"
 

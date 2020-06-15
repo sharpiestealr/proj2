@@ -26,6 +26,11 @@
     <OutputPath>bin\Build\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="chestscreen1.py" />
+    <Compile Include="keyscreen1.py" />
+    <Compile Include="puzzlescreen1.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="rooms\cave.py" />
     <Compile Include="cavescreen1.py" />
     <Compile Include="rooms\chest.py">
@@ -41,17 +46,29 @@
     <Compile Include="enemies.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="rooms\doorscreen1.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="rooms\final.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rooms\finalscreen1.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="rooms\hallway.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
+    <Compile Include="rooms\hallwayscreen1.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="rooms\key_room.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="rooms\puzzle.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="rooms\puzzlescreen1.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="stats.py">
