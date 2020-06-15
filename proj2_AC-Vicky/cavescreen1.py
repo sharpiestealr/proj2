@@ -43,7 +43,7 @@ class Hill(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
     def update(self):
         self.rect.x = 974
-        self.rect.y = 224
+        self.rect.y = 210
 
 class EDoor(pygame.sprite.Sprite):
     def __init__(self):
@@ -52,7 +52,7 @@ class EDoor(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
     def update(self):
         self.rect.x = 1230
-        self.y = 605-self.image.get_height()
+        self.rect.y = 605-self.image.get_height()
 
 class Player_s(pygame.sprite.Sprite):
     def __init__(self):
@@ -60,12 +60,13 @@ class Player_s(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join(image_path, "player.png"))
         self.rect = self.image.get_rect()
         self.x = 100
-        self.y = 405
+        self.y = 605 - self.image.get_height()
         self.right = False
         self.left = False
         self.step_x = 30
-        self.step_y = 230
+        self.step_y = 235
         self.isJump = False
+        self.isFall = False
         self.jumpCount = 11
         self.locat = 1 # 1 = ground; 2 = ledge; 3 = hill
     def update(self):
@@ -76,10 +77,26 @@ class Enemy_s(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join(image_path, "slime mockup.png"))
+        self.step = 20
+        self.right = True
+        self.tick = 5
+        self.x = 740
+        self.y = 605 - self.image.get_height()
         self.rect = self.image.get_rect()
-        self.step = 10
     def update(self):
-        self.rect.x = 780
+        if self.right == True:
+            if self.tick > 0:
+                self.x = self.x + self.step
+            else:
+                self.right = False
+                self.tick = 5
+        else:
+            if self.tick > 0:
+                self.x = self.x - self.step
+            else:
+                self.right = True
+                self.tick = 5
+        self.rect.x = self.x
         self.rect.y = 605-self.image.get_height()
 
 class Coin(pygame.sprite.Sprite):
@@ -136,13 +153,24 @@ while running:
         if keys[pygame.K_UP]:
             player.isJump = True
     else:
-        if player.jumpCount >= -11:
-           player.y -= (player.jumpCount * abs(player.jumpCount)) * 0.5
-           player.jumpCount -= 1
-        else: # This will execute if our jump is finished
-           player.jumpCount = 11
-           player.isJump = False
-           # Resetting our Variables
+        if player.locat !=3:
+            if player.jumpCount >= -11:
+               player.y -= (player.jumpCount * abs(player.jumpCount)) * 0.5
+               player.jumpCount -= 1
+            else: # This will execute if our jump is finished
+               player.jumpCount = 11
+               player.isJump = False
+               # Resetting our Variables
+        else:
+            if player.jumpCount >= -50 or player.isFall == True:
+                player.y -= (player.jumpCount * abs(player.jumpCount)) * 0.5
+                player.jumpCount -= 1
+                if player.y > 605-player.image.get_height():
+                    player.locat = 1
+                    player.y = 605-player.image.get_height()
+                    player.jumpCount = 11
+                    player.isJump = False
+                    player.isFall = False
 
     if keys[pygame.K_RIGHT] and player.x < 1150:
         player.x = player.x + player.step_x
@@ -152,15 +180,32 @@ while running:
 
     hit_ledge = pygame.sprite.spritecollide(player, cenario_l, False)
 
-    if player.locat !=2:
+    if player.locat == 1:
         if player.isJump and hit_ledge:
             player.rect.y = ledge.rect.y + player.image.get_height()
-            player.locat = 2
             player.isJump = False
-    else:
-        if not(hit_ledge):
-            player.isJump = True
+            player.isFall = False
+            jump_temp = player.jumpCount
+            player.jumpCount = 11
+            player.locat = 2
+    elif player.locat == 2:
+        if player.isJump:
+            hit_hill = pygame.sprite.spritecollide(player, cenario_h, False)
+            if hit_hill:
+                player.rect.y = hill.rect.y + player.image.get_height()
+                player.locat = 3
+                player.isJump = False
+                player.jumpCount = 0
+        elif not(hit_ledge):
             player.locat = 1
+            player.isJump = True
+            player.jumpCount = jump_temp
+    
+    hit_hill = pygame.sprite.spritecollide(player, cenario_h, False)
+
+    if player.x < 974 and player.locat == 3:
+        player.isFall = True
+        player.isJump = True
 
     hit_coin = pygame.sprite.spritecollide(player, item, True)
 
@@ -170,11 +215,15 @@ while running:
     hit_enemy = pygame.sprite.spritecollide(player, enemy_group, True)
 
     if hit_enemy:
-        player.locat = 1
+        if player.locat != 1:
+            player.rect.y = 605-player.image.get_height()
+            if player.locat == 2:
+                player.locat = 1
         import combat
-        player.isJump = True
         
     screen.blit(background, (0,0))
     all_sprites.update()
+    enemy.tick -= 1
     all_sprites.draw(screen)
+    #pygame.draw.rect(background, [0, 0, 0], hill.rect)
     pygame.display.flip()
