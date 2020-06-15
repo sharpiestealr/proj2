@@ -80,6 +80,8 @@ def hallway_assets(plat):
     background = pygame.image.load(os.path.join(image_path, "hallway.jpg"))
     screen.blit(background, (0,0))
 
+    music = pygame.mixer.Sound(os.path.join(sound_path, "walk.wav"))
+
     all_sprites = pygame.sprite.Group()
     cenario = pygame.sprite.Group()
     player_group = pygame.sprite.Group()
