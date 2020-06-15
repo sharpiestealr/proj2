@@ -19,13 +19,24 @@ running = False #add this below the change in croom
 #new game prompts to player creation
 #have title pull into cave
 
+plat.croom = "cave"
+
 while plat.stop == 0:
     if (plat.croom == "cave"):
         running = True
         plat = cavescreen1.cave_run(plat, running)
 
     if (plat.croom == "combat"):
-        plat = combat.combat_run(plat)
+        result = combat.combat_run()
+        if result == 1:
+            if plat.lastroom != "chest":
+                plat.croom = plat.lastroom
+                plat.lastroom = "combat"
+            else:
+                plat.croom = "cave"
+                plat.lastroom = "combat"
+        elif result == 2:
+            plat.stop = 1
 
     if (plat.croom == "chest"):
         if plat.chest == 0:
