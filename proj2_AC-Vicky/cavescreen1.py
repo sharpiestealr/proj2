@@ -2,6 +2,13 @@ import pygame
 import os
 import stats
 
+current_path = os.path.dirname(__file__)
+image_path = os.path.join(current_path, 'sprites')
+sound_path = os.path.join(current_path, 'sounds')
+running = False
+
+pygame.init()
+
 class Ledge(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -81,15 +88,13 @@ class Coin(pygame.sprite.Sprite):
         self.rect.x = 514
         self.rect.y = 243
 
-def cave_assets(plat):
+def cave_run(plat, running):
+    
+    plat.player = Player_s()
+
+    plat.lastroom = plat.croom
     plat.croom = "cave"
     #this is the walk screen for THE FIRST CAVE BEFORE THE PUZZLE
-
-    current_path = os.path.dirname(__file__)
-    image_path = os.path.join(current_path, 'sprites')
-    sound_path = os.path.join(current_path, 'sounds')
-
-    pygame.init()
 
     #setting screen size
     screen = pygame.display.set_mode((1280,720))
@@ -107,21 +112,20 @@ def cave_assets(plat):
     cenario_h = pygame.sprite.Group()
     cenario = pygame.sprite.Group()
     item = pygame.sprite.Group()
-    player_group = pygame.sprite.Group()
+    plat.player_group = pygame.sprite.Group()
     enemy_group = pygame.sprite.Group()
 
 
     ledge = Ledge()
     hill = Hill()
     edoor = EDoor()
-    player = Player_s()
     enemy = Enemy_s()
     coin = Coin()
 
     all_sprites.add(ledge)
     all_sprites.add(hill)
     all_sprites.add(edoor)
-    all_sprites.add(player)
+    all_sprites.add(plat.player)
     all_sprites.add(enemy)
     all_sprites.add(coin)
     cenario_l.add(ledge)
@@ -129,7 +133,7 @@ def cave_assets(plat):
     cenario.add(edoor)
     if plat.coin_cave == 0:
         item.add(coin)
-    player_group.add(player)
+    plat.player_group.add(plat.player)
     enemy_group.add(enemy)
 
     all_sprites.update()
@@ -152,10 +156,7 @@ def cave_assets(plat):
     attempt = 0
     chest_enter = 0
     key_enter = 0
-
-    return plat.croom
-
-def cave_run(plat):
+    
     while running:
         pygame.time.delay(100)
 
@@ -173,86 +174,88 @@ def cave_run(plat):
             if chest_enter == 1:
                 pygame.mixer.Sound.play(door_sound)
                 pygame.mixer.music.stop()
-                import chestscreen1
+                plat.lastroom = plat.croom
+                plat.croom = "chest"
                 running = False
                 break
             elif key_enter == 1:
                 pygame.mixer.Sound.play(door_sound)
                 pygame.mixer.music.stop()
-                import keyscreen1
+                plat.lastroom = plat.croom
+                plat.croom = "key"
                 running = False
                 break
 
-        if not(player.isJump):
-            if keys[pygame.K_UP] and player.locat < 3:
-                player.isJump = True
-            elif keys[pygame.K_UP] and player.locat == 3 :
+        if not(plat.player.isJump):
+            if keys[pygame.K_UP] and plat.player.locat < 3:
+                plat.player.isJump = True
+            elif keys[pygame.K_UP] and plat.player.locat == 3 :
                 attempt = 1
         else:
-            if player.locat !=3:
-                if player.jumpCount >= -11:
-                   player.y -= (player.jumpCount * abs(player.jumpCount)) * 0.5
-                   player.jumpCount -= 1
+            if plat.player.locat !=3:
+                if plat.player.jumpCount >= -11:
+                   plat.player.y -= (plat.player.jumpCount * abs(plat.player.jumpCount)) * 0.5
+                   plat.player.jumpCount -= 1
                 else: # This will execute if our jump is finished
-                   player.jumpCount = 11
-                   player.isJump = False
+                   plat.player.jumpCount = 11
+                   plat.player.isJump = False
                    # Resetting our Variables
             else:
-                if player.jumpCount >= -50 or player.isFall == True:
-                    player.y -= (player.jumpCount * abs(player.jumpCount)) * 0.5
-                    player.jumpCount -= 1
-                    if player.y > 605-player.image.get_height():
-                        player.locat = 1
-                        player.y = 605-player.image.get_height()
-                        player.jumpCount = 11
-                        player.isJump = False
-                        player.isFall = False
+                if plat.player.jumpCount >= -50 or plat.player.isFall == True:
+                    plat.player.y -= (plat.player.jumpCount * abs(plat.player.jumpCount)) * 0.5
+                    plat.player.jumpCount -= 1
+                    if plat.player.y > 605-plat.player.image.get_height():
+                        plat.player.locat = 1
+                        plat.player.y = 605-plat.player.image.get_height()
+                        plat.player.jumpCount = 11
+                        plat.player.isJump = False
+                        plat.player.isFall = False
 
-        if keys[pygame.K_RIGHT] and player.x < 1150:
-            player.x = player.x + player.step_x
+        if keys[pygame.K_RIGHT] and plat.player.x < 1150:
+            plat.player.x = plat.player.x + plat.player.step_x
        
-        if keys[pygame.K_LEFT] and player.x > 100:
-           player.x = player.x - player.step_x
+        if keys[pygame.K_LEFT] and plat.player.x > 100:
+           plat.player.x = plat.player.x - plat.player.step_x
 
-        hit_ledge = pygame.sprite.spritecollide(player, cenario_l, False)
+        hit_ledge = pygame.sprite.spritecollide(plat.player, cenario_l, False)
 
-        if player.locat == 1:
-            if player.isJump and hit_ledge:
-                player.rect.y = ledge.rect.y + player.image.get_height()
-                player.isJump = False
-                player.isFall = False
-                jump_temp = player.jumpCount
-                player.jumpCount = 11
-                player.locat = 2
-        elif player.locat == 2:
-            if player.isJump:
-                hit_hill = pygame.sprite.spritecollide(player, cenario_h, False)
+        if plat.player.locat == 1:
+            if plat.player.isJump and hit_ledge:
+                plat.player.rect.y = ledge.rect.y + plat.player.image.get_height()
+                plat.player.isJump = False
+                plat.player.isFall = False
+                jump_temp = plat.player.jumpCount
+                plat.player.jumpCount = 11
+                plat.player.locat = 2
+        elif plat.player.locat == 2:
+            if plat.player.isJump:
+                hit_hill = pygame.sprite.spritecollide(plat.player, cenario_h, False)
                 if hit_hill:
-                    player.rect.y = hill.rect.y + player.image.get_height()
-                    player.locat = 3
-                    player.isJump = False
-                    player.jumpCount = 0
+                    plat.player.rect.y = hill.rect.y + plat.player.image.get_height()
+                    plat.player.locat = 3
+                    plat.player.isJump = False
+                    plat.player.jumpCount = 0
                     chest_enter = 1
             elif not(hit_ledge):
-                player.locat = 1
-                player.isJump = True
-                player.jumpCount = jump_temp
+                plat.player.locat = 1
+                plat.player.isJump = True
+                plat.player.jumpCount = jump_temp
     
-        hit_hill = pygame.sprite.spritecollide(player, cenario_h, False)
+        hit_hill = pygame.sprite.spritecollide(plat.player, cenario_h, False)
 
-        if player.x < 974 and player.locat == 3:
-            player.isFall = True
-            player.isJump = True
+        if plat.player.x < 974 and plat.player.locat == 3:
+            plat.player.isFall = True
+            plat.player.isJump = True
             attempt = 0
             chest_enter = 0
 
-        if player.x >= 1050 and player.locat == 1:
+        if plat.player.x >= 1050 and plat.player.locat == 1:
             key_enter = 1
         else:
             key_enter = 0
 
-        if plat.coin_cave == 0:
-            hit_coin = pygame.sprite.spritecollide(player, item, True)
+        if plat.player.coin_cave == 0:
+            hit_coin = pygame.sprite.spritecollide(plat.player, item, True)
 
             if hit_coin:
                 pygame.mixer.Sound.play(coin_sound)
@@ -260,14 +263,18 @@ def cave_run(plat):
                 plat.coins += 1
                 plat.coin_cave = 1
     
-        hit_enemy = pygame.sprite.spritecollide(player, enemy_group, True)
+        hit_enemy = pygame.sprite.spritecollide(plat.player, enemy_group, True)
 
         if hit_enemy:
-            if player.locat != 1:
-                player.rect.y = 605-player.image.get_height()
-                if player.locat == 2:
-                    player.locat = 1
-            import combat
+            if plat.player.locat != 1:
+                plat.player.rect.y = 605-plat.player.image.get_height()
+                if plat.player.locat == 2:
+                    plat.player.locat = 1
+            if (plat.player.locat == 1):
+                plat.lastroom = plat.croom
+                plat.croom = "combat"
+                running = False
+                break
             pygame.mixer.Sound.play(coin_sound)
             pygame.mixer.music.stop()
         
@@ -283,4 +290,4 @@ def cave_run(plat):
             screen.blit(textdoor, textdoorRect)
         pygame.display.flip()
 
-        return plat.croom
+    return plat

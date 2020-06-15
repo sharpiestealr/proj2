@@ -11,6 +11,15 @@ class Player:
     solved = 0 #check if puzzle is solved
     coin_cave = 0 #check if collect cave coin
     chest = 0 #check if done cave
+    x = 0
+    y = 0
+    step_x = 0
+    step_y = 0
+    isJump = False
+    isFall = False
+    jumpCount = 0
+    locat = 0
+    player = [x, y, step_x, step_y, isJump, isFall, jumpCount, locat]
 
     def __init__(self):
         #self.name = input("What's your name, adventurer? ")  

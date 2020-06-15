@@ -27,10 +27,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="chestscreen1.py" />
+    <Compile Include="doorscreen1.py" />
+    <Compile Include="hallwayscreen1.py" />
     <Compile Include="keyscreen1.py" />
-    <Compile Include="puzzlescreen1.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="rooms\cave.py" />
     <Compile Include="cavescreen1.py" />
     <Compile Include="rooms\chest.py">
@@ -46,29 +45,23 @@
     <Compile Include="enemies.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="rooms\doorscreen1.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="rooms\final.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="rooms\finalscreen1.py">
+    <Compile Include="finalscreen1.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="rooms\hallway.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
-    <Compile Include="rooms\hallwayscreen1.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="rooms\key_room.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="rooms\puzzle.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="rooms\puzzlescreen1.py">
+    <Compile Include="puzzlescreen1.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="stats.py">
@@ -87,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.7" />
+    <InterpreterReference Include="Global|PythonCore|3.8" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
