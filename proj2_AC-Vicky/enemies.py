@@ -113,7 +113,7 @@ class Enemy(object): #pygame.sprite no pygame
 
 enem = Enemy
 
-def combat_calc(enem, posi): #, mob_size to add if necessary
+def combat_calc(enem, posi, plat): #, mob_size to add if necessary
     #generating enemy
     #generating each single attack
     #defining enemy attack and player attack

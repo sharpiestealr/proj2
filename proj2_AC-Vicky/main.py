@@ -19,7 +19,7 @@ running = False #add this below the change in croom
 #new game prompts to player creation
 #have title pull into cave
 
-plat.croom = "cave"
+plat.croom = "doors"
 
 while plat.stop == 0:
     if (plat.croom == "cave"):
@@ -44,3 +44,7 @@ while plat.stop == 0:
     if (plat.croom == "hallway"):
         running = True
         plat = hallwayscreen1.hallway_run(plat, running)
+    
+    if (plat.croom == "doors"):
+        running = True
+        plat = doorscreen1.door_run(plat, running)

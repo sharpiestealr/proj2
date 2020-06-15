@@ -98,13 +98,15 @@ def combat_run(plat):
 
     while running:
         for event in pg.event.get():
-            if event.type == pg.QUIT: 
+            if event.type == pg.QUIT:
+                plat.stop = 1 
                 running = False
             elif event.type == pg.KEYDOWN:
                 if result != 0:
                     running = False
                     break
                 if event.key == pg.K_ESCAPE:
+                    plat.stop = 1
                     running = False
                     break
                 elif event.key == pg.K_DOWN:
@@ -116,7 +118,7 @@ def combat_run(plat):
                         ypos = ypos - 50
                         posi = posi - 1
                 elif event.key == pg.K_x:
-                    h = enemies.combat_calc(enem, posi)
+                    h = enemies.combat_calc(enem, posi, plat)
                     print(h)
                     if h[0] <= 0:
                         healthp = 0
@@ -142,7 +144,8 @@ def combat_run(plat):
             result_text = font.render('Lost!', True, [0, 0, 0],[249,228, 183])
             resultRect = result_text.get_rect()
             resultRect.center = (640, 360)
-            screen.blit(result_text, resultRect)     
+            screen.blit(result_text, resultRect)
+            plat.stop = 1     
 
         box = pg.draw.rect(screen, [249, 228, 183], [0, 500, 1280, 213], 0)
         screen.blit(text1, text1Rect)
