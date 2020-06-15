@@ -20,6 +20,8 @@ background = pygame.image.load(os.path.join(image_path, "walk.jpg"))
 screen.blit(background, (0,0))
 
 all_sprites = pygame.sprite.Group()
+cenario_l = pygame.sprite.Group()
+cenario_h = pygame.sprite.Group()
 cenario = pygame.sprite.Group()
 item = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
@@ -58,12 +60,13 @@ class Player_s(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join(image_path, "player.png"))
         self.rect = self.image.get_rect()
         self.x = 100
-        self.y = 605-self.image.get_height()
+        self.y = 405
+        self.right = False
+        self.left = False
         self.step_x = 30
         self.step_y = 230
         self.isJump = False
         self.jumpCount = 11
-        self.gravity = 1
     def update(self):
         self.rect.x = self.x
         self.rect.y = self.y
@@ -76,7 +79,7 @@ class Enemy_s(pygame.sprite.Sprite):
         self.step = 10
     def update(self):
         self.rect.x = 780
-        self.y = 605-self.image.get_height()
+        self.rect.y = 605-self.image.get_height()
 
 class Coin(pygame.sprite.Sprite):
     def __init__(self):
@@ -100,8 +103,8 @@ all_sprites.add(edoor)
 all_sprites.add(player)
 all_sprites.add(enemy)
 all_sprites.add(coin)
-cenario.add(ledge)
-cenario.add(hill)
+cenario_l.add(ledge)
+cenario_h.add(hill)
 cenario.add(edoor)
 item.add(coin)
 player_group.add(player)
@@ -146,14 +149,14 @@ while running:
     if keys[pygame.K_LEFT] and player.x > 100:
        player.x = player.x - player.step_x
 
-    hit_ledge = pygame.sprite.spritecollide(player, cenario, False)
+    hit_ledge = pygame.sprite.spritecollide(player, cenario_l, False)
 
-    if hit_ledge and player.isJump:
-        player.y = ledge.rect.y-player.image.get_height()
-        player.jumpCount = 11
+    if player.isJump and hit_ledge:
+        player.rect.y = ledge.rect.y + player.image.get_height()
         player.isJump = False
-    elif (hit_ledge == False):
-        player.y = 605-player.image.get_height()
+    elif not(hit_ledge):
+        if player.rect.y != 605 - player.image.get_height():
+            player.isJump = True
 
     hit_coin = pygame.sprite.spritecollide(player, item, True)
 
