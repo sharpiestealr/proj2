@@ -21,21 +21,26 @@ running = False #add this below the change in croom
 
 plat.croom = "cave"
 
-if (plat.croom == "cave"):
-    running = True
-plat = cavescreen1.cave_run(plat, running)
+while plat.stop == 0:
+    if (plat.croom == "cave"):
+        running = True
+        plat = cavescreen1.cave_run(plat, running)
 
-if (plat == "combat"):
-    plat = combat.combat(plat)
+    if (plat.croom == "combat"):
+        plat = combat.combat_run(plat)
 
-if (plat == "chest"):
-    running = True
-plat = chestscreen1.chest_run(plat, running)
+    if (plat.croom == "chest"):
+        if plat.chest == 0:
+            running = True
+            plat = chestscreen1.chest_run(plat, running)
+        else:
+            running = True
+            plat = cavescreen1.cave_run(plat, running)
 
-if (plat == "key"):
-    running = True
-plat = keyscreen1.key_run(plat, running)
+    if (plat.croom == "key"):
+        running = True
+        plat = keyscreen1.key_run(plat, running)
 
-if (plat == "hallway"):
-    running = True
-plat = hallwayscreen1.hallway_run(plat, running)
+    if (plat.croom == "hallway"):
+        running = True
+        plat = hallwayscreen1.hallway_run(plat, running)

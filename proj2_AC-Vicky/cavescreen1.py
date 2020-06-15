@@ -126,15 +126,16 @@ def cave_run(plat, running):
     all_sprites.add(hill)
     all_sprites.add(edoor)
     all_sprites.add(plat.player)
-    all_sprites.add(enemy)
-    all_sprites.add(coin)
     cenario_l.add(ledge)
     cenario_h.add(hill)
     cenario.add(edoor)
     if plat.coin_cave == 0:
+        all_sprites.add(coin)
         item.add(coin)
     plat.player_group.add(plat.player)
-    enemy_group.add(enemy)
+    if plat.enemy_cave == 0:
+        all_sprites.add(enemy)
+        enemy_group.add(enemy)
 
     all_sprites.update()
     all_sprites.draw(screen)
@@ -149,6 +150,10 @@ def cave_run(plat, running):
     textchestRect = textchest.get_rect()
     textchestRect.center = (700, 50)
 
+    textnochest = font.render("The room has caved in", True, [0, 0, 0])
+    textnochestRect = textnochest.get_rect()
+    textnochestRect.center = (700, 50)
+
     textdoor = font.render("Press x to enter", True, [0, 0, 0])
     textdoorRect = textdoor.get_rect()
     textdoorRect.center = (700, 50)
@@ -156,28 +161,34 @@ def cave_run(plat, running):
     attempt = 0
     chest_enter = 0
     key_enter = 0
+    nochest_enter = 0
     
     while running:
         pygame.time.delay(100)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: 
+            if event.type == pygame.QUIT:
+                plat.stop = 1 
                 running = False
+                break
     
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_ESCAPE]:
+            plat.stop = 1
             running = False
             break
  
         if keys[pygame.K_x]:
-            if chest_enter == 1:
+            if chest_enter == 1 and plat.chest == 0:
                 pygame.mixer.Sound.play(door_sound)
                 pygame.mixer.music.stop()
                 plat.lastroom = plat.croom
                 plat.croom = "chest"
                 running = False
                 break
+            elif chest_enter == 1 and plat.chest == 1:
+                nochest_enter = 1
             elif key_enter == 1:
                 pygame.mixer.Sound.play(door_sound)
                 pygame.mixer.music.stop()
@@ -254,7 +265,7 @@ def cave_run(plat, running):
         else:
             key_enter = 0
 
-        if plat.player.coin_cave == 0:
+        if plat.coin_cave == 0:
             hit_coin = pygame.sprite.spritecollide(plat.player, item, True)
 
             if hit_coin:
@@ -262,21 +273,23 @@ def cave_run(plat, running):
                 pygame.mixer.music.stop()
                 plat.coins += 1
                 plat.coin_cave = 1
-    
-        hit_enemy = pygame.sprite.spritecollide(plat.player, enemy_group, True)
 
-        if hit_enemy:
-            if plat.player.locat != 1:
-                plat.player.rect.y = 605-plat.player.image.get_height()
-                if plat.player.locat == 2:
-                    plat.player.locat = 1
-            if (plat.player.locat == 1):
-                plat.lastroom = plat.croom
-                plat.croom = "combat"
-                running = False
-                break
-            pygame.mixer.Sound.play(coin_sound)
-            pygame.mixer.music.stop()
+        if plat.enemy_cave == 0:
+            hit_enemy = pygame.sprite.spritecollide(plat.player, enemy_group, True)
+
+            if hit_enemy:
+                if plat.player.locat != 1:
+                    plat.player.rect.y = 605-plat.player.image.get_height()
+                    if plat.player.locat == 2:
+                        plat.player.locat = 1
+                if (plat.player.locat == 1):
+                    plat.lastroom = plat.croom
+                    plat.croom = "combat"
+                    plat.enemy_cave = 1
+                    running = False
+                    break
+                pygame.mixer.Sound.play(coin_sound)
+                pygame.mixer.music.stop()
         
         screen.blit(background, (0,0))
         all_sprites.update()
@@ -284,8 +297,10 @@ def cave_run(plat, running):
         all_sprites.draw(screen)
         if attempt == 1:
             screen.blit(textjump, textjumpRect)
-        if chest_enter == 1:
+        if chest_enter == 1 and plat.chest == 0:
             screen.blit(textchest, textchestRect)
+        if nochest_enter == 1 and plat.chest == 1:
+            screen.blit(textnochest, textnochestRect)
         if key_enter == 1:
             screen.blit(textdoor, textdoorRect)
         pygame.display.flip()

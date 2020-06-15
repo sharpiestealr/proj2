@@ -10,8 +10,7 @@ image_path = os.path.join(current_path, 'sprites')
 
 pg.init()
 
-def combat(plat):
-    plat.lastroom = plat.croom
+def combat_run(plat):
     plat.croom = "combat"
 
     #determining player and enemy stats
@@ -34,7 +33,9 @@ def combat(plat):
         enem_sprite = "slime mockup.png"
         enem_name = "slime"
 
+    enem.hp = enem.tothp
     result = 0
+    h = []
 
     #creating screen and background
     screen = pg.display.set_mode((1280,720))
@@ -100,7 +101,7 @@ def combat(plat):
             if event.type == pg.QUIT: 
                 running = False
             elif event.type == pg.KEYDOWN:
-                if plat.result != 0:
+                if result != 0:
                     running = False
                     break
                 if event.key == pg.K_ESCAPE:
@@ -115,28 +116,29 @@ def combat(plat):
                         ypos = ypos - 50
                         posi = posi - 1
                 elif event.key == pg.K_x:
-                    h = enemies.combat(enem_name, "no", posi)
+                    h = enemies.combat_calc(enem, posi)
+                    print(h)
                     if h[0] <= 0:
                         healthp = 0
-                        plat.result = 2
+                        result = 2
                     else:
                         healthp = h[0]
 
                     if h[1] <= 0:
                         healthe = 0
-                        plat.result = 1
+                        result = 1
                     else:
                         healthe = h[1]
 
                     textp = font.render("Player: {0}".format(healthp), True, [0, 0, 0])
                     texte = font.render("{0}: {1}".format(enem.mob, healthe), True, [0, 0, 0])
                 
-        if plat.result == 1:
+        if result == 1:
             result_text = font.render('Victory!', True, [0, 0, 0],[249,228, 183])
             resultRect = result_text.get_rect()
             resultRect.center = (640, 360)
             screen.blit(result_text, resultRect)
-        elif plat.result == 2:
+        elif result == 2:
             result_text = font.render('Lost!', True, [0, 0, 0],[249,228, 183])
             resultRect = result_text.get_rect()
             resultRect.center = (640, 360)
@@ -152,6 +154,13 @@ def combat(plat):
         choice = pg.draw.circle(screen, [0, 0, 0], [1030, ypos], 9)
         pg.display.update()
     
-    plat.croom = plat.lastroom
-    plat.lastroom = "combat"
+    if result == 1:
+        if plat.lastroom != "chest":
+            plat.croom = plat.lastroom
+            plat.lastroom = "combat"
+        else:
+            plat.croom = "cave"
+            plat.lastroom = "combat"
+    elif result == 2:
+        plat.stop = 1
     return plat

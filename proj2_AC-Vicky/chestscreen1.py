@@ -63,30 +63,31 @@ def chest_run(plat, running):
         pygame.time.delay(100)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: 
+            if event.type == pygame.QUIT:
+                plat.stop = 1  
                 running = False
+                break
     
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_ESCAPE]:
             running = False
+            plat.stop = 1 
             break
 
         if keys[pygame.K_x] and player.x >= 501:
-            import combat
-            pygame.mixer.Sound.play(coin_sound)
-            pygame.mixer.music.stop()
-            plat.lastroom = "chest"
             pygame.mixer.Sound.play(door_sound)
             pygame.mixer.music.stop()
-            import cavescreen1
+            plat.lastroom = plat.croom
+            plat.croom = "combat"
+            plat.chest = 1
             running = False
             break
         elif keys[pygame.K_x] and player.x <= 150:
-            plat.lastroom = "chest"
-            pygame.mixer.Sound.play(coin_sound)
+            plat.lastroom = plat.croom
+            plat.croom = "cave"
+            pygame.mixer.Sound.play(door_sound)
             pygame.mixer.music.stop()
-            import cavescreen1
             running = False
             break
 

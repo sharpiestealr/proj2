@@ -10,6 +10,9 @@ class Player:
     potion = 0 #potion inventory
     solved = 0 #check if puzzle is solved
     coin_cave = 0 #check if collect cave coin
+    enemy_cave = 0
+    enemy_hall = 0
+    enemy_door = 0
     chest = 0 #check if done cave
     x = 0
     y = 0
@@ -20,10 +23,12 @@ class Player:
     jumpCount = 0
     locat = 0
     player = [x, y, step_x, step_y, isJump, isFall, jumpCount, locat]
+    player_last = [x, y, step_x, step_y, isJump, isFall, jumpCount, locat]
+    stop = 0
 
     def __init__(self):
         #self.name = input("What's your name, adventurer? ")  
-        self.hp = 10+2*self.level
+        self.tothp = 10+2*self.level
         self.atk = 3+1*self.level
         self.df = 3+1*self.level
         self.threshold = 10*self.level
@@ -31,7 +36,9 @@ class Player:
         #combat variables
         self.dmg = 0
         self.res = 0
-        self.result = 0        
+        self.result = 0
+        self.hp = self.tothp
+        print(self.hp)        
     
     def pattack(self, posi):
         if posi == 1:
