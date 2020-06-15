@@ -5,6 +5,7 @@ import stats
 plat = stats.Player()
 plat.croom = "chest"
 plat.lastroom = "cave"
+print(plat.coin_cave)
 #this is the walk screen for THE FIRST CAVE BEFORE THE PUZZLE
 
 current_path = os.path.dirname(__file__)

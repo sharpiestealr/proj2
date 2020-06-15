@@ -1,25 +1,23 @@
 class Player:
     """a place to keep player info"""
-        #player stats
-    
+    #player stats
+    level = 1
+    xp = 0
+    croom = "opening" #used to control the boss factor
+    lastroom = ""
+    coins = 0
+    key_check = 0 #key check
+    potion = 0 #potion inventory
+    solved = 0 #check if puzzle is solved
+    coin_cave = 0 #check if collect cave coin
+    chest = 0 #check if done cave
+
     def __init__(self):
         #self.name = input("What's your name, adventurer? ")  
-        self.level = 1
         self.hp = 10+2*self.level
         self.atk = 3+1*self.level
         self.df = 3+1*self.level
-        self.xp = 0
-        self.threshold = 10
-        
-        #check variables
-        self.chapter = 1
-        self.croom = "opening" #used to control the boss factor
-        self.lastroom = ""
-        self.coins = 0
-        self.door = 0 #only becomes 1 to enter door, entering new room wipes this
-        self.key = 0 #key check
-        self.potion = 0 #potion inventory
-        self.solved = 0 #check if puzzle is solved
+        self.threshold = 10*self.level
 
         #combat variables
         self.dmg = 0
