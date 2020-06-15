@@ -67,6 +67,7 @@ class Player_s(pygame.sprite.Sprite):
         self.step_y = 230
         self.isJump = False
         self.jumpCount = 11
+        self.locat = 1 # 1 = ground; 2 = ledge; 3 = hill
     def update(self):
         self.rect.x = self.x
         self.rect.y = self.y
@@ -130,7 +131,7 @@ while running:
     if keys[pygame.K_ESCAPE]:
         running = False
         break
-
+ 
     if not(player.isJump):
         if keys[pygame.K_UP]:
             player.isJump = True
@@ -151,12 +152,15 @@ while running:
 
     hit_ledge = pygame.sprite.spritecollide(player, cenario_l, False)
 
-    if player.isJump and hit_ledge:
-        player.rect.y = ledge.rect.y + player.image.get_height()
-        player.isJump = False
-    elif not(hit_ledge):
-        if player.rect.y != 605 - player.image.get_height():
+    if player.locat !=2:
+        if player.isJump and hit_ledge:
+            player.rect.y = ledge.rect.y + player.image.get_height()
+            player.locat = 2
+            player.isJump = False
+    else:
+        if not(hit_ledge):
             player.isJump = True
+            player.locat = 1
 
     hit_coin = pygame.sprite.spritecollide(player, item, True)
 
@@ -166,7 +170,9 @@ while running:
     hit_enemy = pygame.sprite.spritecollide(player, enemy_group, True)
 
     if hit_enemy:
+        player.locat = 1
         import combat
+        player.isJump = True
         
     screen.blit(background, (0,0))
     all_sprites.update()
