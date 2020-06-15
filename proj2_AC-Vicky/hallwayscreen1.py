@@ -8,6 +8,7 @@ plat.croom = "hallway"
 
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
+sound_path = os.path.join(current_path, 'sounds')
 
 pygame.init()
 
@@ -17,6 +18,10 @@ screen = pygame.display.set_mode((1280,720))
 #setting scenery and static objects
 background = pygame.image.load(os.path.join(image_path, "hallway.jpg"))
 screen.blit(background, (0,0))
+
+#importing sounds and music
+coin_sound = pygame.mixer.Sound(os.path.join(sound_path, "coin_collect.wav"))
+door_sound = pygame.mixer.Sound(os.path.join(sound_path, "close_door_1.wav"))
 
 all_sprites = pygame.sprite.Group()
 cenario = pygame.sprite.Group()
@@ -144,10 +149,14 @@ while running:
  
     if keys[pygame.K_x]:
         if player.x <= 150:
+            pygame.mixer.Sound.play(door_sound)
+            pygame.mixer.music.stop()
             import keyscreen1
             running = False
             break
         elif player.x >= 1050:
+            pygame.mixer.Sound.play(door_sound)
+            pygame.mixer.music.stop()
             import doorscreen1
             running = False
             break
@@ -175,6 +184,8 @@ while running:
 
     if hit_enemy:
         import combat
+        pygame.mixer.Sound.play(coin_sound)
+        pygame.mixer.music.stop()
         enemy.kill()
         
     screen.blit(background, (0,0))

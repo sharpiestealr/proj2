@@ -6,9 +6,10 @@ import random
 
 #determining player and enemy stats
 plat = stats.Player()
-enem_gen = random.randint(0,3)
+enem_gen = random.randint(1,3)
 
 boss = 'no'
+print(plat.croom)
 if plat.croom == "final":
         boss = 'yes'
 
@@ -111,7 +112,7 @@ while running:
                 if posi > 1:
                     ypos = ypos - 50
                     posi = posi - 1
-            elif event.key == pg.K_RETURN:
+            elif event.key == pg.K_x:
                 h = enemies.combat(enem_name, "no", posi)
                 if h[0] <= 0:
                     healthp = 0

@@ -10,6 +10,7 @@ print(plat.coin_cave)
 
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
+sound_path = os.path.join(current_path, 'sounds')
 
 pygame.init()
 
@@ -19,6 +20,10 @@ screen = pygame.display.set_mode((1280,720))
 #setting scenery and static objects
 background = pygame.image.load(os.path.join(image_path, "chest.jpg"))
 screen.blit(background, (0,0))
+
+#importing sounds and music
+coin_sound = pygame.mixer.Sound(os.path.join(sound_path, "coin_collect.wav"))
+door_sound = pygame.mixer.Sound(os.path.join(sound_path, "close_door_1.wav"))
 
 all_sprites = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
@@ -69,12 +74,18 @@ while running:
 
     if keys[pygame.K_x] and player.x >= 501:
         import combat
+        pygame.mixer.Sound.play(coin_sound)
+        pygame.mixer.music.stop()
         plat.lastroom = "chest"
+        pygame.mixer.Sound.play(door_sound)
+        pygame.mixer.music.stop()
         import cavescreen1
         running = False
         break
     elif keys[pygame.K_x] and player.x <= 150:
         plat.lastroom = "chest"
+        pygame.mixer.Sound.play(coin_sound)
+        pygame.mixer.music.stop()
         import cavescreen1
         running = False
         break
