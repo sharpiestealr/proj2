@@ -3,10 +3,9 @@ import os
 import stats
 
 plat = stats.Player()
-plat.croom = "chest"
-plat.lastroom = "cave"
-print(plat.coin_cave)
-#this is the walk screen for THE FIRST CAVE BEFORE THE PUZZLE
+plat.croom = "final"
+plat.lastroom = "doors"
+#this is the walk screen for the final boss screen
 
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
