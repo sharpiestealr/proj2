@@ -39,7 +39,7 @@ class EDoor(pygame.sprite.Sprite):
 class Player_s(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(image_path, "player.png"))
+        self.image = pygame.image.load(os.path.join(image_path, "man still.png"))
         self.rect = self.image.get_rect()
         self.x = 100
         self.y = 600-self.image.get_height()
@@ -56,7 +56,7 @@ class Player_s(pygame.sprite.Sprite):
 class Enemy_s(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(image_path, "slime mockup.png"))
+        self.image = pygame.image.load(os.path.join(image_path, "overworld.png"))
         self.step = 20
         self.right = True
         self.tick = 5

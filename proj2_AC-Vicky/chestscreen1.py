@@ -12,7 +12,7 @@ pygame.init()
 class Player_s(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(image_path, "player.png"))
+        self.image = pygame.image.load(os.path.join(image_path, "man still.png"))
         self.rect = self.image.get_rect()
         self.x = 75
         self.y = 400
