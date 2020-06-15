@@ -39,6 +39,7 @@ def chest_run(plat, running):
     #importing sounds and music
     coin_sound = pygame.mixer.Sound(os.path.join(sound_path, "coin_collect.wav"))
     door_sound = pygame.mixer.Sound(os.path.join(sound_path, "close_door_1.wav"))
+    music = pygame.mixer.Sound(os.path.join(sound_path, "walk.wav"))
 
     all_sprites = pygame.sprite.Group()
     player_group = pygame.sprite.Group()

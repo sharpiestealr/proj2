@@ -103,6 +103,7 @@ def key_run(plat, running):
     coin_sound = pygame.mixer.Sound(os.path.join(sound_path, "coin_collect.wav"))
     door_sound = pygame.mixer.Sound(os.path.join(sound_path, "close_door_1.wav"))
     key_sound = pygame.mixer.Sound(os.path.join(sound_path, "key_collect.wav"))
+    music = pygame.mixer.Sound(os.path.join(sound_path, "walk.wav"))
 
     all_sprites = pygame.sprite.Group()
     cenario_t = pygame.sprite.Group()
