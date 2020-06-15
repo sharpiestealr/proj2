@@ -13,7 +13,8 @@ class Player:
         
         #check variables
         self.chapter = 1
-        self.room = "opening" #used to control the boss factor
+        self.croom = "opening" #used to control the boss factor
+        self.lastroom = ""
         self.coins = 0
         self.door = 0 #only becomes 1 to enter door, entering new room wipes this
         self.key = 0 #key check
@@ -22,7 +23,8 @@ class Player:
 
         #combat variables
         self.dmg = 0
-        self.res = 0        
+        self.res = 0
+        self.result = 0        
     
     def pattack(self, posi):
         if posi == 1:

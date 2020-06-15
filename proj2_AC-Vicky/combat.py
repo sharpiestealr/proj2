@@ -92,7 +92,7 @@ while running:
         if event.type == pg.QUIT: 
             running = False
         elif event.type == pg.KEYDOWN:
-            if result != 0:
+            if plat.result != 0:
                 running = False
                 break
             if event.key == pg.K_ESCAPE:
@@ -110,25 +110,25 @@ while running:
                 h = enemies.combat(enem_name, "no", posi)
                 if h[0] <= 0:
                     healthp = 0
-                    result = 2
+                    plat.result = 2
                 else:
                     healthp = h[0]
 
                 if h[1] <= 0:
                     healthe = 0
-                    result = 1
+                    plat.result = 1
                 else:
                     healthe = h[1]
 
                 textp = font.render("Player: {0}".format(healthp), True, [0, 0, 0])
                 texte = font.render("{0}: {1}".format(enem.mob, healthe), True, [0, 0, 0])
                 
-    if result == 1:
+    if plat.result == 1:
         result_text = font.render('Victory!', True, [0, 0, 0],[249,228, 183])
         resultRect = result_text.get_rect()
         resultRect.center = (640, 360)
         screen.blit(result_text, resultRect)
-    elif result == 2:
+    elif plat.result == 2:
         result_text = font.render('Lost!', True, [0, 0, 0],[249,228, 183])
         resultRect = result_text.get_rect()
         resultRect.center = (640, 360)

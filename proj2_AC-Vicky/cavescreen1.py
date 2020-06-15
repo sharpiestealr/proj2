@@ -1,10 +1,9 @@
 import pygame
 import os
 import stats
-#import combat
 
 plat = stats.Player()
-
+plat.croom = "cave"
 #this is the walk screen for THE FIRST CAVE BEFORE THE PUZZLE
 
 current_path = os.path.dirname(__file__)
@@ -61,8 +60,6 @@ class Player_s(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = 100
         self.y = 605 - self.image.get_height()
-        self.right = False
-        self.left = False
         self.step_x = 30
         self.step_y = 235
         self.isJump = False
@@ -132,7 +129,18 @@ all_sprites.update()
 all_sprites.draw(screen)
 pygame.display.flip()
 
-transparent = (0, 0, 0, 0)
+font = pygame.font.Font('freesansbold.ttf', 36)
+textjump = font.render("You can't jump here", True, [0, 0, 0])
+textjumpRect = textjump.get_rect()
+textjumpRect.center = (700, 100)
+
+textchest = font.render("Press x to enter", True, [0, 0, 0])
+textchestRect = textchest.get_rect()
+textchestRect.center = (700, 50)
+
+attempt = 0
+chest_enter = 0
+key_enter = 0
     
 running = True
 
@@ -149,9 +157,16 @@ while running:
         running = False
         break
  
+    if keys[pygame.K_x] and player.x >= 501:
+        import chestscreen1
+        running = False
+        break
+
     if not(player.isJump):
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP] and player.locat < 3:
             player.isJump = True
+        elif keys[pygame.K_UP] and player.locat == 3 :
+            attempt = 1
     else:
         if player.locat !=3:
             if player.jumpCount >= -11:
@@ -196,6 +211,7 @@ while running:
                 player.locat = 3
                 player.isJump = False
                 player.jumpCount = 0
+                chest_enter = 1
         elif not(hit_ledge):
             player.locat = 1
             player.isJump = True
@@ -206,6 +222,8 @@ while running:
     if player.x < 974 and player.locat == 3:
         player.isFall = True
         player.isJump = True
+        attempt = 0
+        chest_enter = 0
 
     hit_coin = pygame.sprite.spritecollide(player, item, True)
 
@@ -225,5 +243,8 @@ while running:
     all_sprites.update()
     enemy.tick -= 1
     all_sprites.draw(screen)
-    #pygame.draw.rect(background, [0, 0, 0], hill.rect)
+    if attempt == 1:
+        screen.blit(textjump, textjumpRect)
+    if chest_enter == 1:
+        screen.blit(textchest, textchestRect)
     pygame.display.flip()
