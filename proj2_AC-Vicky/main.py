@@ -19,8 +19,6 @@ running = False #add this below the change in croom
 #new game prompts to player creation
 #have title pull into cave
 
-plat.croom = "doors"
-
 while plat.stop == 0:
     if (plat.croom == "cave"):
         running = True
