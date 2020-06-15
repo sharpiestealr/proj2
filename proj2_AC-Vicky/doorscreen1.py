@@ -89,6 +89,7 @@ def door_run(plat, running):
             pygame.mixer.music.stop()
             plat.lastroom = plat.croom
             plat.croom = "hallway"
+            plat.stop = 0
             running = False
             break
 
