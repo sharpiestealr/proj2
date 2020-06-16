@@ -49,7 +49,12 @@ class Player_s(pygame.sprite.Sprite):
         self.isFall = False
         self.jumpCount = 11
         self.locat = 1 # 1 = ground; 2 = LLedge; 3 = TLedge
+        self.left = False
+        self.haveflip = 1
     def update(self):
+        if self.haveflip == 0:
+            self.image = pygame.transform.flip(self.image, True, False)
+            self.haveflip = 1
         self.rect.x = self.x
         self.rect.y = self.y
 
@@ -215,11 +220,19 @@ def key_run(plat, running):
                         plat.player.isFall = False
 
         if keys[pygame.K_RIGHT] and plat.player.x < 1150:
-            plat.player.x = plat.player.x + plat.player.step_x
-       
+            if plat.player.left == True:
+                plat.player.left = False
+                plat.player.haveflip = 0
+                plat.player.x = plat.player.x + plat.player.step_x
+            else:
+                plat.player.x = plat.player.x + plat.player.step_x       
         if keys[pygame.K_LEFT] and plat.player.x > 50:
-           plat.player.x = plat.player.x - plat.player.step_x
-
+            if plat.player.left == False:
+                plat.player.left = True
+                plat.player.haveflip = 0
+                plat.player.x = plat.player.x - plat.player.step_x
+            else:
+                plat.player.x = plat.player.x - plat.player.step_x
         hit_lledge = pygame.sprite.spritecollide(plat.player, cenario_l, False)
 
         if plat.player.locat == 1:
