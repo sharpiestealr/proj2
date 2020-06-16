@@ -49,13 +49,10 @@ class Player_s(pygame.sprite.Sprite):
         self.isFall = False
         self.jumpCount = 11
         self.locat = 1 # 1 = ground; 2 = ledge; 3 = hill
-        self.leftC = False
-        self.left = self.image
+        self.left = False
     def update(self):
-        if self.leftC == True:
+        if self.left == True:
             self.image = pygame.transform.flip(self.image, True, False)
-        else:
-            self.image = pygame.transform.flip(self.image, False, False)
         self.rect.x = self.x
         self.rect.y = self.y
 
@@ -234,7 +231,7 @@ def cave_run(plat, running):
             plat.player.x = plat.player.x + plat.player.step_x
        
         if keys[pygame.K_LEFT] and plat.player.x > 100:
-            plat.leftC == True
+            plat.left == True
             plat.player.x = plat.player.x - plat.player.step_x
 
         hit_ledge = pygame.sprite.spritecollide(plat.player, cenario_l, False)
