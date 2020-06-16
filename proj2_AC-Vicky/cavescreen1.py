@@ -189,10 +189,10 @@ def cave_run(plat, running):
                 pygame.mixer.Sound.play(door_sound)
                 pygame.mixer.music.stop()
                 plat.lastroom = plat.croom
-                plat.croom = "chest"
+                plat.croom = "chest1"
                 running = False
                 break
-            elif chest_enter == 1 and plat.chest == 1:
+            elif chest_enter == 1 and plat.chest1 == 1:
                 nochest_enter = 1
             elif key_enter == 1:
                 pygame.mixer.Sound.play(door_sound)

@@ -13,6 +13,8 @@ class Player:
     enemy_door = 0
     enemy_key = 0
     chest = 0 #check if done cave
+    chest1 = 0 #alt chest
+    chest2 = 0 #auto combat
     x = 0
     y = 0
     step_x = 0

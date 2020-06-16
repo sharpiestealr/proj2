@@ -8,7 +8,7 @@ import chestscreen1
 import keyscreen1
 import hallwayscreen1
 import doorscreen1
-import puzzlescreen1
+import chestscreen2
 import finalscreen1
 import openingscreen
 
@@ -47,13 +47,21 @@ while plat.stop == 0:
         elif result == 2:
             plat.stop = 1
 
-    if (plat.croom == "chest"):
+    if (plat.croom == "chest1"):
         if plat.chest == 0:
             running = True
             plat = chestscreen1.chest_run(plat, running)
         else:
             running = True
             plat = cavescreen1.cave_run(plat, running)
+
+    if (plat.croom == "chest2"):
+        if plat.chest == 0:
+            running = True
+            plat = chestscreen2.chest_run(plat, running)
+        else:
+            running = True
+            plat = cavescreen2.cave_run(plat, running)
 
     if (plat.croom == "key"):
         running = True

@@ -65,7 +65,7 @@ def door_run(plat, running):
             pygame.mixer.Sound.play(door_sound)
             pygame.mixer.music.stop()
             plat.lastroom = plat.croom
-            plat.croom = "puzzle"
+            plat.croom = "chest2"
             running = False
             break
 

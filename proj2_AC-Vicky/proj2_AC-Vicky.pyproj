@@ -27,6 +27,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="chestscreen1.py" />
+    <Compile Include="chestscreen2.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="doorscreen1.py" />
     <Compile Include="hallwayscreen1.py" />
     <Compile Include="keyscreen1.py" />
