@@ -79,5 +79,7 @@ while plat.stop == 0:
     if (plat.croom == "final"):
         running = True
         plat = finalscreen1.door_run(plat, running)
-
-    #gen credits outside loop?
+        
+    #gen credits outside loop? that's apparently a no
+    if (plat.croom == "credits"):
+        plat = credits.run(plat, running)
