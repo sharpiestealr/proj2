@@ -39,7 +39,9 @@ class EDoor(pygame.sprite.Sprite):
 class Player_s(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join(image_path, "man still.png"))
+        self.image = [pygame.image.load(os.path.join(image_path, "man still.png")), pygame.image.load(os.path.join(image_path, "walk 1.png")), pygame.image.load(os.path.join(image_path, "walk 2.png"))]
+        self.index = 0
+        self.image = self.image[self.index]
         self.rect = self.image.get_rect()
         self.x = 100
         self.y = 605 - self.image.get_height()
@@ -50,6 +52,10 @@ class Player_s(pygame.sprite.Sprite):
         self.jumpCount = 11
         self.locat = 1 # 1 = ground; 2 = ledge; 3 = hill
     def update(self):
+        self.index += 1
+        if self.index >= len(self.images):
+            self.index = 0
+        self.image = self.images[self.index]
         self.rect.x = self.x
         self.rect.y = self.y
 
