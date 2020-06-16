@@ -103,7 +103,7 @@ def key_run(plat, running):
     coin_sound = pygame.mixer.Sound(os.path.join(sound_path, "coin_collect.wav"))
     door_sound = pygame.mixer.Sound(os.path.join(sound_path, "close_door_1.wav"))
     key_sound = pygame.mixer.Sound(os.path.join(sound_path, "key_collect.wav"))
-    music = pygame.mixer.Sound(os.path.join(sound_path, "walk.wav"))
+    music = pygame.mixer.music.load(os.path.join(sound_path, "walk.wav"))
 
     all_sprites = pygame.sprite.Group()
     cenario_t = pygame.sprite.Group()
@@ -138,6 +138,7 @@ def key_run(plat, running):
     all_sprites.update()
     all_sprites.draw(screen)
     pygame.display.flip()
+    pygame.mixer.music.play()
 
     font = pygame.font.Font('freesansbold.ttf', 36)
     textjump = font.render("You can't jump here", True, [0, 0, 0])
@@ -265,7 +266,7 @@ def key_run(plat, running):
             hit_key = pygame.sprite.spritecollide(plat.player, item, True)
             if hit_key:
                 pygame.mixer.Sound.play(key_sound)
-                pygame.mixer.music.stop()
+                #pygame.mixer.music.stop()
                 plat.key_check = 1
     
         if plat.enemy_key == 0:

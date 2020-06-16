@@ -23,12 +23,14 @@ class Player:
     isFall = False
     jumpCount = 0
     locat = 0
+    left = False
+    haveflip = 0
     hp = 12
     atk = 4
     df = 4
     dmg = 0
     res = 0
     player = [x, y, step_x, step_y, isJump, isFall, jumpCount, locat]
-    player_last = [x, y, step_x, step_y, isJump, isFall, jumpCount, locat]
+    player_last = [x, y, step_x, step_y, isJump, isFall, jumpCount, locat, left, haveflip]
     player_combat = [hp, atk, df, dmg, res]
     stop = 0  

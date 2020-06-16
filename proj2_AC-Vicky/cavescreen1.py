@@ -50,9 +50,11 @@ class Player_s(pygame.sprite.Sprite):
         self.jumpCount = 11
         self.locat = 1 # 1 = ground; 2 = ledge; 3 = hill
         self.left = False
+        self.haveflip = 1
     def update(self):
-        if self.left == True:
+        if self.haveflip == 0:
             self.image = pygame.transform.flip(self.image, True, False)
+            self.haveflip = 1
         self.rect.x = self.x
         self.rect.y = self.y
 
@@ -144,7 +146,7 @@ def cave_run(plat, running):
     all_sprites.update()
     all_sprites.draw(screen)
     pygame.display.flip()
-    #pygame.mixer.music.play()
+    pygame.mixer.music.play(-1)
 
     font = pygame.font.Font('freesansbold.ttf', 36)
     textjump = font.render("You can't jump here", True, [0, 0, 0])
@@ -228,11 +230,20 @@ def cave_run(plat, running):
                         plat.player.isFall = False
 
         if keys[pygame.K_RIGHT] and plat.player.x < 1150:
-            plat.player.x = plat.player.x + plat.player.step_x
+            if plat.player.left == True:
+                plat.player.left = False
+                plat.player.haveflip = 0
+                plat.player.x = plat.player.x + plat.player.step_x
+            else:
+                plat.player.x = plat.player.x + plat.player.step_x
        
         if keys[pygame.K_LEFT] and plat.player.x > 100:
-            plat.left == True
-            plat.player.x = plat.player.x - plat.player.step_x
+            if plat.player.left == False:
+                plat.player.left = True
+                plat.player.haveflip = 0
+                plat.player.x = plat.player.x - plat.player.step_x
+            else:
+                plat.player.x = plat.player.x - plat.player.step_x
 
         hit_ledge = pygame.sprite.spritecollide(plat.player, cenario_l, False)
 
@@ -276,7 +287,7 @@ def cave_run(plat, running):
 
             if hit_coin:
                 pygame.mixer.Sound.play(coin_sound)
-                pygame.mixer.music.stop()
+                #pygame.mixer.music.stop()
                 plat.coins += 1
                 plat.coin_cave = 1
 
