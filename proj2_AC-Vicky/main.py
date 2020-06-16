@@ -1,7 +1,6 @@
 import pygame
 import os
 import stats
-import enemies
 import random
 import cavescreen1
 import combat
@@ -11,45 +10,27 @@ import hallwayscreen1
 import doorscreen1
 import puzzlescreen1
 import finalscreen1
+import openingscreen
 
 plat = stats.Player()
-running = False #add this below the change in croom
+current_path = os.path.dirname(__file__)
+image_path = os.path.join(current_path, 'sprites')
+sound_path = os.path.join(current_path, 'sounds')
 
-opening = pygame.image.load(os.path.join(image_path, "opening.jpg"))
-screen.blit(background, (0,0))
-pygame.display.flip()
+pygame.init()
 
-running = True
-posi = 1
-
-while running:
-    for event in pg.event.get():
-        if event.key == pg.K_ESCAPE:
-            plat.stop = 1
-            running = False
-            break
-        elif event.key == pg.K_DOWN:
-            if posi < 3:
-                ypos = ypos + 50
-                posi = posi + 1
-        elif event.key == pg.K_UP:
-            if posi > 1:
-                ypos = ypos - 50
-                posi = posi - 1
-        if event.key == pg.K_x:
-            if posi == 1:
-                instructions = pygame.image.load(os.path.join(image_path, "instructions.jpg"))
-                screen.blit(instructions, (0,0))
-                pygame.display.flip()
-    
+running = False #add this below the change in croom    
 
 #draw opening title here
 #new game prompts to player creation
 #have title pull into cave
 
-plat.croom = "cave"
+plat.croom = "opening"
 
 while plat.stop == 0:
+    if plat.croom == "opening":
+        plat = openingscreen.opening_run(plat)
+
     if (plat.croom == "cave"):
         running = True
         plat = cavescreen1.cave_run(plat, running)

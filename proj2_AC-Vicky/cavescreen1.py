@@ -106,7 +106,7 @@ def cave_run(plat, running):
     #importing sounds and music
     coin_sound = pygame.mixer.Sound(os.path.join(sound_path, "coin_collect.wav"))
     door_sound = pygame.mixer.Sound(os.path.join(sound_path, "close_door_1.wav"))
-    music = pygame.mixer.Sound(os.path.join(sound_path, "walk.wav"))
+    #music = pygame.mixer.music.load(os.path.join(sound_path, "walk.wav"))
 
     all_sprites = pygame.sprite.Group()
     cenario_l = pygame.sprite.Group()
@@ -141,6 +141,7 @@ def cave_run(plat, running):
     all_sprites.update()
     all_sprites.draw(screen)
     pygame.display.flip()
+    #pygame.mixer.music.play()
 
     font = pygame.font.Font('freesansbold.ttf', 36)
     textjump = font.render("You can't jump here", True, [0, 0, 0])
