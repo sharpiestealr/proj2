@@ -2,6 +2,12 @@ import pygame
 import os
 import stats
 
+current_path = os.path.dirname(__file__)
+image_path = os.path.join(current_path, 'sprites')
+sound_path = os.path.join(current_path, 'sounds')
+
+pygame.init()
+
 class Player_s(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -45,24 +51,6 @@ class Enemy_s(pygame.sprite.Sprite):
         self.rect.x = self.x
         self.rect.y = 600-self.image.get_height()
 
-class IDoor(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.x = 0
-        self.xmax = 110
-        self.y = 338
-        self.ymax = 622
-        self.rect = pygame.rect(self.x, self.y, self.xmax-self.x, self.ymax-self.y)
-
-class EDoor(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
-        self.x = 1233
-        self.xmax = 1280
-        self.y = 320
-        self.ymax = 622
-        self.rect = pygame.rect(self.x, self.y, self.xmax-x, self.ymax-y)
-
 def hallway_run(plat, running):
 
     plat.lastroom = plat.croom
@@ -71,6 +59,7 @@ def hallway_run(plat, running):
 
     current_path = os.path.dirname(__file__)
     image_path = os.path.join(current_path, 'sprites')
+    sound_path = os.path.join(current_path, 'sounds')
 
     pygame.init()
 
@@ -81,31 +70,27 @@ def hallway_run(plat, running):
     background = pygame.image.load(os.path.join(image_path, "hallway.jpg"))
     screen.blit(background, (0,0))
 
-    music = pygame.mixer.Sound(os.path.join(sound_path, "walk.wav"))
+    music = pygame.mixer.music.load(os.path.join(sound_path, "walk.wav"))
 
     all_sprites = pygame.sprite.Group()
     cenario = pygame.sprite.Group()
     player_group = pygame.sprite.Group()
     enemy_group = pygame.sprite.Group()
 
-    idoor = IDoor()
-    edoor = EDoor()
     player = Player_s()
     enemy = Enemy_s()
-    key = Key()
 
-    all_sprites.add(edoor)
     all_sprites.add(player)
-    all_sprites.add(enemy)
-    all_sprites.add(idoor)
-    cenario.add(edoor)
-    cenario.add(idoor)
     player_group.add(player)
-    enemy_group.add(enemy)
+
+    if plat.enemy_hall == 0:
+        all_sprites.add(enemy)
+        enemy_group.add(enemy)
 
     all_sprites.update()
     all_sprites.draw(screen)
     pygame.display.flip()
+    pygame.mixer.music.play()
 
     font = pygame.font.Font('freesansbold.ttf', 36)
     textjump = font.render("You can't jump here", True, [0, 0, 0])
@@ -113,11 +98,11 @@ def hallway_run(plat, running):
     textjumpRect.center = (700, 100)
 
     textidoor = font.render("Press x to enter", True, [0, 0, 0])
-    textidoor = textcave.get_rect()
-    textidoor.center = (700, 50)
+    textidoorRect = textidoor.get_rect()
+    textidoorRect.center = (700, 50)
 
     textedoor = font.render("Press x to enter", True, [0, 0, 0])
-    textedoorRect = texthallway.get_rect()
+    textedoorRect = textedoor.get_rect()
     textedoorRect.center = (700, 50)
 
     attempt = 0
@@ -129,15 +114,18 @@ def hallway_run(plat, running):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
+                plat.stop = 1  
                 running = False
+                break
     
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_ESCAPE]:
+            plat.stop = 1  
             running = False
             break
  
-        if keys[pygame.K_x] and player.locat == 1:
+        if keys[pygame.K_x]:
             if player.x <= 150:
                 plat.lastroom = plat.croom
                 plat.croom = "key"
@@ -145,34 +133,12 @@ def hallway_run(plat, running):
                 break
             elif player.x >= 1050:
                 plat.lastroom = plat.croom
-                plat.croom = "door"
+                plat.croom = "doors"
                 running = False
                 break
 
-        if not(player.isJump):
-            if keys[pygame.K_UP] and player.locat < 3:
-                player.isJump = True
-            elif keys[pygame.K_UP] and player.locat == 3 :
-                attempt = 1
-        else:
-            if player.locat !=3:
-                if player.jumpCount >= -11:
-                   player.y -= (player.jumpCount * abs(player.jumpCount)) * 0.5
-                   player.jumpCount -= 1
-                else: # This will execute if our jump is finished
-                   player.jumpCount = 11
-                   player.isJump = False
-                   # Resetting our Variables
-            else:
-                if player.jumpCount >= -50 or player.isFall == True:
-                    player.y -= (player.jumpCount * abs(player.jumpCount)) * 0.5
-                    player.jumpCount -= 1
-                    if player.y > 600-player.image.get_height():
-                        player.locat = 1
-                        player.y = 600-player.image.get_height()
-                        player.jumpCount = 11
-                        player.isJump = False
-                        player.isFall = False
+        if keys[pygame.K_UP]:
+            attempt = 1
 
         if keys[pygame.K_RIGHT] and player.x < 1150:
             player.x = player.x + player.step_x
@@ -180,43 +146,26 @@ def hallway_run(plat, running):
         if keys[pygame.K_LEFT] and player.x > 50:
            player.x = player.x - player.step_x
 
-        if player.locat == 1:
-            if player.isJump:
-                player.rect.y = player.image.get_height() + player.step_y
-                player.isJump = False
-                player.isFall = False
-                jump_temp = player.jumpCount
-                player.jumpCount = 11
-                player.locat = 2
-        elif player.locat == 2:
-            if player.isJump:
-                if hit_tledge:
-                    player.rect.y = player.step_y + player.image.get_height()
-                    player.locat = 3
-                    player.isJump = False
-                    player.jumpCount = 0
-                    chest_enter = 1
-
-        if player.x >= 1232 and player.locat == 1:
+        if player.x >= 1100:
             doors_enter = 1
         else:
             doors_enter = 0
 
-        if player.x <= 109 and player.locat == 1:
+        if player.x <= 109:
             key_enter = 1
         else:
             key_enter = 0
     
-        hit_enemy = pygame.sprite.spritecollide(player, enemy_group, True)
+        if plat.enemy_hall == 0:
+            hit_enemy = pygame.sprite.spritecollide(player, enemy_group, True)
 
-        if hit_enemy:
-            if player.locat != 1:
-                player.rect.y = 600-player.image.get_height()
-                if player.locat == 2:
-                    player.locat = 1
-            plat.lastroom = plat.croom
-            plat.croom = "combat"
-            break
+            if hit_enemy:
+                plat.lastroom = plat.croom
+                plat.croom = "combat"
+                plat.enemy_hall = 1
+                pygame.mixer.music.stop()
+                running = False
+                break
         
         screen.blit(background, (0,0))
         all_sprites.update()
@@ -224,7 +173,7 @@ def hallway_run(plat, running):
         all_sprites.draw(screen)
         if attempt == 1:
             screen.blit(textjump, textjumpRect)
-        if door_enter == 1:
+        if doors_enter == 1:
             screen.blit(textedoor, textedoorRect)
         if key_enter == 1:
             screen.blit(textidoor, textidoorRect)
