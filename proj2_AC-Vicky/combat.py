@@ -6,6 +6,7 @@ import random
 #importing sprite folders
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
+sound_path = os.path.join(current_path, 'sounds')
 
 pg.init()
 
@@ -145,13 +146,14 @@ def combat_calc(enem, attk): #, mob_size to add if necessary
        enem.gno_ATK()
     elif enem.mob == 'Slime':
        enem.sli_ATK()
+    choice = enem.attack
 
     #calculate damage, place damage
     enem.rps(attk)
     enem.hp = enem.hp - (plat.player_combat.dmg + enem.res)
     plat.player_combat.hp = plat.player_combat.hp - (enem.dmg + plat.player_combat.res)
-    health = [plat.player_combat.hp, enem.hp]
-    return health
+    info = [plat.player_combat.hp, enem.hp, choice]
+    return info
 
 def combat_run():
     plat.player_combat = Player_c()
@@ -164,15 +166,15 @@ def combat_run():
 
     if enem_gen == 1:
         enem = Enemy('goblin', boss)
-        enem_sprite = "goblin mockup.png"
+        enem_sprite = "goblin.png"
         enem_name = "goblin"
     elif enem_gen == 2:
         enem = Enemy('gnome', boss)
-        enem_sprite = "gnome mockup.png"
+        enem_sprite = "gnome.png"
         enem_name = "gnome"
     else:
         enem = Enemy('slime', boss)
-        enem_sprite = "slime mockup.png"
+        enem_sprite = "slime.png"
         enem_name = "slime"
 
     result = 0
@@ -183,33 +185,49 @@ def combat_run():
     background = background.convert()
 
     screen.blit(background, (0,0))
-    pg.display.update()
 
     #creating box for player to pick action
-    box = pg.draw.rect(screen, [249, 228, 183], [0, 500, 1280, 213], 0)
-    pg.display.update()
+    box = pg.image.load(os.path.join(image_path, "text box back.png"))
+    box = pg.transform.scale(box, (1350, 500))
+    screen.blit(box, (-50,500))
 
-    font = pg.font.Font('freesansbold.ttf', 24)
+    #healthbar
+    heart1 = pg.image.load(os.path.join(image_path, "hp.png"))
+    heart2 = pg.image.load(os.path.join(image_path, "hp.png"))
+
+    screen.blit(heart1, (10, 10))
+    screen.blit(heart2, (1170, 10))
+
+    #vs symbol
+    vs = pg.image.load(os.path.join(image_path, "x.png"))
+    screen.blit(vs, (550, 250))
+
+    #choices
+    attack_s = pg.image.load(os.path.join(image_path, "attack.png"))
+    def_s = pg.image.load(os.path.join(image_path, "defense.png"))
+    magic_s = pg.image.load(os.path.join(image_path, "magic.png"))
+
+    font = pg.font.Font('freesansbold.ttf', 36)
     text1 = font.render('Attack', True, [0, 0, 0])
     text2 = font.render('Defense', True, [0, 0, 0])
     text3 = font.render("Magic", True, [0, 0, 0])
     textc = font.render("Choose an action", True, [0, 0, 0])
-    textp = font.render("Player: {0}".format(plat.hp), True, [0, 0, 0])
-    texte = font.render("{0}: {1}".format(enem.mob, enem.hp), True, [0, 0, 0])
+    textp = font.render("{0}".format(plat.hp), True, [0, 0, 0])
+    texte = font.render("{0}".format(enem.hp), True, [0, 0, 0])
 
     text1Rect = text1.get_rect()
     text2Rect = text2.get_rect()
     text3Rect = text3.get_rect()
     textcRect = textc.get_rect()
-    textpRect = textp.get_rect()
-    texteRect = texte.get_rect()
+    textpRect = text3.get_rect()
+    texteRect = textc.get_rect()
 
-    text1Rect.center = (1100, 540)
-    text2Rect.center = (1100, 590)
-    text3Rect.center = (1100, 640)
-    textcRect.center = (880, 590)
-    textpRect.center = (100, 540)
-    texteRect.center = (100, 590)
+    text1Rect.center = (900, 560)
+    text2Rect.center = (900, 610)
+    text3Rect.center = (900, 660)
+    textcRect.center = (550, 610)
+    textpRect.center = (1250, 50)
+    texteRect.center = (200, 50)
 
     screen.blit(text1, text1Rect)
     screen.blit(text2, text2Rect)
@@ -222,16 +240,17 @@ def combat_run():
     #creating cursor for choice
     ypos = 540
     posi = 1
-    choice = pg.draw.circle(screen, [0, 0, 0], [1030, ypos], 9)
-
-    pg.display.update()
+    cursor = pg.image.load(os.path.join(image_path, "arrow.png"))
+    cursor = pg.transform.scale(cursor, (int(cursor.get_width()*0.25), int(cursor.get_height()*0.25)))
 
     #placing character and enemy sprites
-    player_char = pg.image.load(os.path.join(image_path, "player.png"))
+    player_char = pg.image.load(os.path.join(image_path, "man still.png"))
+    player_char = pg.transform.flip(player_char, True,False)
     enem_char = pg.image.load(os.path.join(image_path, enem_sprite))
 
     screen.blit(player_char, (1030,200))
-    screen.blit(enem_char, (250,200))
+    screen.blit(enem_char, (150,200))
+    screen.blit(cursor, (750, ypos))
     pg.display.update()
 
     running = True
@@ -260,9 +279,9 @@ def combat_run():
                         posi = posi - 1
                 elif event.key == pg.K_x:
                     attk = plat.player_combat.pattack(posi)
+                    print(posi)
                     print(attk)
                     h = combat_calc(enem, attk)
-                    print(h)
                     if h[0] <= 0:
                         healthp = 0
                         result = 2
@@ -275,26 +294,28 @@ def combat_run():
                     else:
                         healthe = h[1]
 
-                    textp = font.render("Player: {0}".format(healthp), True, [0, 0, 0])
-                    texte = font.render("{0}: {1}".format(enem.mob, healthe), True, [0, 0, 0])
-                
-        if result == 1:
-            result_text = font.render('Victory!', True, [0, 0, 0],[249,228, 183])
-            resultRect = result_text.get_rect()
-            resultRect.center = (640, 360)
-            screen.blit(result_text, resultRect)
-        elif result == 2:
-            result_text = font.render('Lost!', True, [0, 0, 0],[249,228, 183])
-            resultRect = result_text.get_rect()
-            resultRect.center = (640, 360)
-            screen.blit(result_text, resultRect)   
+                    textp = font.render("{0}".format(healthp), True, [0, 0, 0])
+                    texte = font.render("{0}".format(healthe), True, [0, 0, 0]) 
 
-        box = pg.draw.rect(screen, [249, 228, 183], [0, 500, 1280, 213], 0)
+        screen.blit(background, (0,0))
+        screen.blit(player_char, (1030,200))
+        screen.blit(enem_char, (150,200))
+        screen.blit(box, (-50,500))
+        screen.blit(heart1, (10, 10))
+        screen.blit(heart2, (1170, 10))
         screen.blit(text1, text1Rect)
         screen.blit(text2, text2Rect)
         screen.blit(text3, text3Rect)
         screen.blit(textc, textcRect)
         screen.blit(textp, textpRect)
         screen.blit(texte, texteRect)
-        choice = pg.draw.circle(screen, [0, 0, 0], [1030, ypos], 9)
+        screen.blit(cursor, (750, ypos))
+        screen.blit(vs, (550, 250))
+        if result == 1:
+            result_text = pg.image.load(os.path.join(image_path, "victory.png"))
+            screen.blit(result_text, (550, 250))
+        elif result == 2:
+            result_text = pg.image.load(os.path.join(image_path, "you died.png"))
+            screen.blit(result_text, (550, 250))  
+
         pg.display.update()
