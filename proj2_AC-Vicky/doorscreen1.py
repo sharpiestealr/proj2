@@ -100,3 +100,5 @@ def door_run(plat, running):
         screen.blit(text3, text3Rect)
         screen.blit(textreturn, textreturnRect)
         pygame.display.flip()
+
+    return plat

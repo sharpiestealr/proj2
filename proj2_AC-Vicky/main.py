@@ -15,6 +15,34 @@ import finalscreen1
 plat = stats.Player()
 running = False #add this below the change in croom
 
+opening = pygame.image.load(os.path.join(image_path, "opening.jpg"))
+screen.blit(background, (0,0))
+pygame.display.flip()
+
+running = True
+posi = 1
+
+while running:
+    for event in pg.event.get():
+        if event.key == pg.K_ESCAPE:
+            plat.stop = 1
+            running = False
+            break
+        elif event.key == pg.K_DOWN:
+            if posi < 3:
+                ypos = ypos + 50
+                posi = posi + 1
+        elif event.key == pg.K_UP:
+            if posi > 1:
+                ypos = ypos - 50
+                posi = posi - 1
+        if event.key == pg.K_x:
+            if posi == 1:
+                instructions = pygame.image.load(os.path.join(image_path, "instructions.jpg"))
+                screen.blit(instructions, (0,0))
+                pygame.display.flip()
+    
+
 #draw opening title here
 #new game prompts to player creation
 #have title pull into cave
