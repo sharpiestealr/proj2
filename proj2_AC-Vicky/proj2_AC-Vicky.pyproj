@@ -31,6 +31,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="doorscreen1.py" />
+    <Compile Include="finalscreen1.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="hallwayscreen1.py" />
     <Compile Include="keyscreen1.py" />
     <Compile Include="rooms\cave.py" />
@@ -49,9 +52,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="rooms\final.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="finalscreen1.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="rooms\hallway.py">
@@ -76,10 +76,94 @@
     <Content Include="notes\stats notes.txt" />
     <Content Include="notes\structure notes.txt" />
     <Content Include="notes\story notes.txt" />
+    <Content Include="sounds\close_door_1.mp3" />
+    <Content Include="sounds\close_door_1.wav" />
+    <Content Include="sounds\coin_collect.mp3" />
+    <Content Include="sounds\coin_collect.wav" />
+    <Content Include="sounds\combat.pkf" />
+    <Content Include="sounds\combat.wav" />
+    <Content Include="sounds\ending.pkf" />
+    <Content Include="sounds\ending.wav" />
+    <Content Include="sounds\key_collect.mp3" />
+    <Content Include="sounds\key_collect.wav" />
+    <Content Include="sounds\open.pkf" />
+    <Content Include="sounds\open.wav" />
+    <Content Include="sounds\walk.pkf" />
+    <Content Include="sounds\walk.wav" />
+    <Content Include="sprites\11.png" />
+    <Content Include="sprites\12.png" />
+    <Content Include="sprites\13.png" />
+    <Content Include="sprites\21.png" />
+    <Content Include="sprites\22.png" />
+    <Content Include="sprites\23.png" />
+    <Content Include="sprites\32.png" />
+    <Content Include="sprites\33.png" />
+    <Content Include="sprites\arrow.png" />
+    <Content Include="sprites\attack.png" />
+    <Content Include="sprites\chest.jpg" />
+    <Content Include="sprites\chest.psd" />
+    <Content Include="sprites\coin.png" />
+    <Content Include="sprites\combat bg.jpg" />
+    <Content Include="sprites\credits.jpg" />
+    <Content Include="sprites\defense.png" />
+    <Content Include="sprites\door.png" />
+    <Content Include="sprites\doors.jpg" />
+    <Content Include="sprites\ending.jpg" />
+    <Content Include="sprites\exp box.png" />
+    <Content Include="sprites\exp color.png" />
+    <Content Include="sprites\exp gray.png" />
+    <Content Include="sprites\gnome mockup.png" />
+    <Content Include="sprites\gnome.png" />
+    <Content Include="sprites\gnome.psd" />
+    <Content Include="sprites\goblin mockup.png" />
+    <Content Include="sprites\goblin.png" />
+    <Content Include="sprites\goblin.psd" />
+    <Content Include="sprites\hallway.jpg" />
+    <Content Include="sprites\hallway.psd" />
+    <Content Include="sprites\hill.png" />
+    <Content Include="sprites\hp.png" />
+    <Content Include="sprites\instructions.jpg" />
+    <Content Include="sprites\key room.psd" />
+    <Content Include="sprites\key.png" />
+    <Content Include="sprites\keybg.jpg" />
+    <Content Include="sprites\ledge.png" />
+    <Content Include="sprites\long.png" />
+    <Content Include="sprites\magic.png" />
+    <Content Include="sprites\man still.png" />
+    <Content Include="sprites\man still.psd" />
+    <Content Include="sprites\opening.jpg" />
+    <Content Include="sprites\opening.psd" />
+    <Content Include="sprites\overworld.png" />
+    <Content Include="sprites\overworld.psd" />
+    <Content Include="sprites\player.png" />
+    <Content Include="sprites\potion.png" />
+    <Content Include="sprites\puzzle.psd" />
+    <Content Include="sprites\puzzle1.jpg" />
+    <Content Include="sprites\puzzle2.jpg" />
+    <Content Include="sprites\shields.png" />
+    <Content Include="sprites\slime mockup.png" />
+    <Content Include="sprites\slime.png" />
+    <Content Include="sprites\slmie.psd" />
+    <Content Include="sprites\small coin.png" />
+    <Content Include="sprites\solved.psd" />
+    <Content Include="sprites\text box back.png" />
+    <Content Include="sprites\text box box.png" />
+    <Content Include="sprites\title.jpg" />
+    <Content Include="sprites\victory.png" />
+    <Content Include="sprites\walk 1.png" />
+    <Content Include="sprites\walk 1.psd" />
+    <Content Include="sprites\walk 2.png" />
+    <Content Include="sprites\walk 2.psd" />
+    <Content Include="sprites\walk.jpg" />
+    <Content Include="sprites\walk.psd" />
+    <Content Include="sprites\x.png" />
+    <Content Include="sprites\you died.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="rooms\" />
     <Folder Include="notes\" />
+    <Folder Include="sounds\" />
+    <Folder Include="sprites\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.7" />

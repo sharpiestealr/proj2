@@ -16,6 +16,7 @@ plat = stats.Player()
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
 sound_path = os.path.join(current_path, 'sounds')
+music = pygame.mixer.music.load(os.path.join(sound_path, "opening.wav"))
 
 pygame.init()
 
@@ -78,5 +79,7 @@ while plat.stop == 0:
     if (plat.croom == "final"):
         running = True
         plat = finalscreen1.door_run(plat, running)
-
-    #gen credits outside loop?
+        
+    #gen credits outside loop? that's apparently a no
+    if (plat.croom == "credits"):
+        plat = credits.run(plat, running)

@@ -63,7 +63,8 @@ class EDoor(pygame.sprite.Sprite):
         self.ymax = 622
         self.rect = pygame.rect(self.x, self.y, self.xmax-x, self.ymax-y)
 
-def hallway_assets(plat):
+def hallway_run(plat, running):
+
     plat.lastroom = plat.croom
     plat.croom = "hallway"
     #this is the walk screen for the random hallway
@@ -122,10 +123,7 @@ def hallway_assets(plat):
     attempt = 0
     key_enter = 0
     doors_enter = 0
-    
-    return plat
 
-def hallway_run(plat):
     while running:
         pygame.time.delay(100)
 
