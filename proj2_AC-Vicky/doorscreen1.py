@@ -20,7 +20,7 @@ def door_run(plat, running):
     #importing sounds and music
     coin_sound = pygame.mixer.Sound(os.path.join(sound_path, "coin_collect.wav"))
     door_sound = pygame.mixer.Sound(os.path.join(sound_path, "close_door_1.wav"))
-    music = pygame.mixer.Sound(os.path.join(sound_path, "walk.wav"))
+    music = pygame.mixer.music.load(os.path.join(sound_path, "walk.wav"))
 
     font = pygame.font.Font('freesansbold.ttf', 36)
     text1 = font.render('LEFT', True, [0, 0, 0])
@@ -43,6 +43,7 @@ def door_run(plat, running):
     screen.blit(textreturn, textreturnRect)
 
     pygame.display.flip()
+    pygame.mixer.music.play()
 
     while running:
         pygame.time.delay(100)
