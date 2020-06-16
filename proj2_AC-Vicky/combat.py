@@ -8,37 +8,59 @@ current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
 sound_path = os.path.join(current_path, 'sounds')
 
+plat = stats.Player()
+
 pg.init()
 
-plat = stats.Player()
+class Player_c():
+    def __init__(self):
+        #self.name = input("What's your name, adventurer? ")  
+        self.hp = 12
+        self.atk = 4
+        self.df = 4
+
+        #combat variables
+        self.dmg = 0
+        self.res = 0
+
 posi = 1
+
+def pattack(posi):
+    if posi == 1:
+        action = "attack"
+    elif posi == 2:
+        action = "defense"
+    else:
+        action = "magic"
+    return action
 
 class Enemy(object): #pygame.sprite no pygame
     """a place to create enemy variables, generate enemies and combats"""
     
     def __init__(self, enemy_type, boss): #generates the enemies
         #chooses the enemy class
-        if enemy_type == 'goblin':
-            self.hp = 8
-            self.atk = 3
-            self.df = 3
-            self.mob = "Goblin"
-        elif enemy_type == 'gnome':
-            self.hp = 7
-            self.atk = 3
-            self.df = 5
-            self.mob = "Gnome"
-        elif enemy_type == 'slime':
-            self.hp = 10
-            self.atk = 3
-            self.df = 4
-            self.mob = "Slime"
         #checks if enemy has boss factor
+        if boss == "no":
+            if enemy_type == 'goblin':
+                self.hp = 8
+                self.atk = 3
+                self.df = 3
+                self.mob = "Goblin"
+            elif enemy_type == 'gnome':
+                self.hp = 7
+                self.atk = 3
+                self.df = 5
+                self.mob = "Gnome"
+            elif enemy_type == 'slime':
+                self.hp = 10
+                self.atk = 3
+                self.df = 4
+                self.mob = "Slime"
         if boss == 'yes':
-            self.hp = self.hp*2
-            self.atk = self.atk*2
-            self.df = self.df*2
-            self.xp = self.xp*2
+            self.hp = 16
+            self.atk = 3
+            self.df = 6
+            self.mob = "Goblin"
         #combat variables
         self.dmg = 0
         self.res = 0
@@ -70,26 +92,26 @@ class Enemy(object): #pygame.sprite no pygame
             self.attack = 'magic'
 
     #method to determine damage
-    def rps(self, player_choice):
+    def rps(self, attk):
         #if both are the same
-        if (plat.player_combat.action == self.attack):
-            if plat.player_combat.action == 'attack':
+        if (attk == self.attack):
+            if attk == 'attack':
                 plat.player_combat.dmg = plat.player_combat.atk +1
                 plat.player_combat.res = 1
                 self.dmg = self.atk +1
                 self.res = 1
-            elif plat.action == 'defense':
+            elif attk == 'defense':
                 plat.player_combat.dmg = plat.player_combat.atk -1
                 plat.player_combat.res = -1
                 self.dmg = self.atk -1
                 self.res = -1
-            elif plat.action == 'magic':
+            elif attk == 'magic':
                 plat.player_combat.dmg = plat.player_combat.atk
                 plat.player_combat.res = 0
                 self.dmg = self.atk
                 self.res = 0
         #if they are different - by player
-        elif (plat.player_combat.action == 'attack'):
+        elif (attk == 'attack'):
             plat.player_combat.dmg = plat.player_combat.atk +1
             plat.player_combat.res = +1
             if (self.attack == 'defense'):
@@ -98,7 +120,7 @@ class Enemy(object): #pygame.sprite no pygame
             elif (self.attack == 'magic'):
                 self.dmg = self.atk
                 self.res = 0
-        elif (plat.player_combat.action == 'defense'):
+        elif (attk == 'defense'):
             plat.player_combat.dmg = plat.player_combat.atk -1
             plat.player_combat.res = -1
             if (self.attack == 'attack'):
@@ -107,7 +129,7 @@ class Enemy(object): #pygame.sprite no pygame
             elif (self.attack == 'magic'):
                 self.dmg = self.atk
                 self.res = 0
-        elif (plat.player_combat.action == 'magic'):
+        elif (attk == 'magic'):
             plat.player_combat.dmg = plat.player_combat.atk
             plat.player_combat.res = 0
             if (self.attack == 'attack'):
@@ -116,25 +138,6 @@ class Enemy(object): #pygame.sprite no pygame
             elif (self.attack == 'defense'):
                 self.dmg = self.atk -1
                 self.res = -1
-
-class Player_c():
-    def __init__(self):
-        #self.name = input("What's your name, adventurer? ")  
-        self.hp = 12
-        self.atk = 4
-        self.df = 4
-
-        #combat variables
-        self.dmg = 0
-        self.res = 0
-
-    def pattack(self, posi):
-        if posi == 1:
-            self.action = "attack"
-        elif posi == 2:
-            self.action = "defense"
-        else:
-            self.action = "magic"
 
 def combat_calc(enem, attk): #, mob_size to add if necessary
     #generating enemy
@@ -155,27 +158,31 @@ def combat_calc(enem, attk): #, mob_size to add if necessary
     info = [plat.player_combat.hp, enem.hp, choice]
     return info
 
-def combat_run():
+def combat_run(rboss):
     plat.player_combat = Player_c()
     #determining player and enemy stats
-    enem_gen = random.randint(1,3)
-
     boss = 'no'
-    if plat.croom == "final":
+    if rboss ==  1:
             boss = 'yes'
 
-    if enem_gen == 1:
+    if boss == "no":
+        enem_gen = random.randint(1,3)
+        if enem_gen == 1:
+            enem = Enemy('goblin', boss)
+            enem_sprite = "goblin.png"
+            enem_name = "goblin"
+        elif enem_gen == 2:
+            enem = Enemy('gnome', boss)
+            enem_sprite = "gnome.png"
+            enem_name = "gnome"
+        else:
+            enem = Enemy('slime', boss)
+            enem_sprite = "slime.png"
+            enem_name = "slime"
+    else:
         enem = Enemy('goblin', boss)
         enem_sprite = "goblin.png"
         enem_name = "goblin"
-    elif enem_gen == 2:
-        enem = Enemy('gnome', boss)
-        enem_sprite = "gnome.png"
-        enem_name = "gnome"
-    else:
-        enem = Enemy('slime', boss)
-        enem_sprite = "slime.png"
-        enem_name = "slime"
 
     result = 0
 
@@ -185,6 +192,9 @@ def combat_run():
     background = background.convert()
 
     screen.blit(background, (0,0))
+
+    #music
+    music = pg.mixer.music.load(os.path.join(sound_path, "combat.wav"))
 
     #creating box for player to pick action
     box = pg.image.load(os.path.join(image_path, "text box back.png"))
@@ -236,6 +246,7 @@ def combat_run():
     screen.blit(textp, textpRect)
     screen.blit(texte, texteRect)
     pg.display.update()
+    pg.mixer.music.play()
 
     #creating cursor for choice
     ypos = 540
@@ -260,6 +271,7 @@ def combat_run():
             if event.type == pg.QUIT:
                 plat.stop = 1 
                 running = False
+                pg.mixer.music.stop()
             elif event.type == pg.KEYDOWN:
                 if result != 0:
                     return result
@@ -278,9 +290,7 @@ def combat_run():
                         ypos = ypos - 50
                         posi = posi - 1
                 elif event.key == pg.K_x:
-                    attk = plat.player_combat.pattack(posi)
-                    print(posi)
-                    print(attk)
+                    attk = pattack(posi)
                     h = combat_calc(enem, attk)
                     if h[0] <= 0:
                         healthp = 0

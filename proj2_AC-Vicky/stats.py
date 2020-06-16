@@ -15,6 +15,7 @@ class Player:
     chest = 0 #check if done cave
     chest1 = 0 #alt chest
     chest2 = 0 #auto combat
+    end = 0
     x = 0
     y = 0
     step_x = 0

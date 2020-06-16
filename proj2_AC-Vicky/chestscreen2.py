@@ -12,20 +12,25 @@ pygame.init()
 class Player_s(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = -pygame.image.load(os.path.join(image_path, "man still.png"))
+        self.image = pygame.image.load(os.path.join(image_path, "man still.png"))
         self.rect = self.image.get_rect()
         self.x = 1280-75
         self.y = 400
         self.step_x = 30
         self.step_y = 10
+        self.left = True
+        self.haveflip = 0
     def update(self):
+        if self.haveflip == 0:
+            self.image = pygame.transform.flip(self.image, True, False)
+            self.haveflip = 1
         self.rect.x = self.x
         self.rect.y = self.y
 
 def chest_run(plat, running):
 
     plat.lastroom = plat.croom
-    plat.croom = "chest"
+    plat.croom = "chest2"
     
     plat.player = Player_s()
 
@@ -34,6 +39,7 @@ def chest_run(plat, running):
 
     #setting scenery and static objects
     background = pygame.image.load(os.path.join(image_path, "chest.jpg"))
+    background = pygame.transform.flip(background, True, False)
     screen.blit(background, (0,0))
 
     #importing sounds and music
@@ -77,36 +83,48 @@ def chest_run(plat, running):
             plat.stop = 1 
             break
 
-        if keys[pygame.K_x] and player.x >= 1280-501:
+        if keys[pygame.K_x] and player.x <= 1280-501:
             pygame.mixer.Sound.play(door_sound)
             pygame.mixer.music.stop()
             plat.lastroom = plat.croom
             plat.croom = "combat"
-            plat.chest1 = 1
+            plat.chest2 = 1
             running = False
             break
-        elif keys[pygame.K_x] and player.x <= 1280-150:
+        elif keys[pygame.K_x] and player.x >= 1280-150:
             plat.lastroom = plat.croom
             plat.croom = "doors"
             pygame.mixer.Sound.play(door_sound)
             pygame.mixer.music.stop()
             running = False
             break
-
-        if keys[pygame.K_RIGHT] and player.x < 1280-525:
-            player.x = player.x + player.step_x
-            player.y = player.y - player.step_y
+        
+        if keys[pygame.K_RIGHT] and player.x < 1280-100:
+            if plat.player.left == True:
+                plat.player.left = False
+                plat.player.haveflip = 0
+                player.x = player.x + player.step_x
+                player.y = player.y + player.step_y
+            else:
+                player.x = player.x + player.step_x
+                player.y = player.y + player.step_y
        
-        if keys[pygame.K_LEFT] and player.x > 1280-100:
-           player.x = player.x - player.step_x
-           player.y = player.y + player.step_y
+        if keys[pygame.K_LEFT] and player.x > 1280-525:
+            if plat.player.left == False:
+                plat.player.left = True
+                plat.player.haveflip = 0
+                player.x = player.x - player.step_x
+                player.y = player.y - player.step_y
+            else:
+                player.x = player.x - player.step_x
+                player.y = player.y - player.step_y
 
         screen.blit(background, (0,0))
         all_sprites.update()
         all_sprites.draw(screen)
-        if player.x >= 1280-500:
+        if player.x <= 1280-500:
             screen.blit(text1, text1Rect)
-        if player.x <= 1280-150:
+        if player.x >= 1280-150:
             screen.blit(textreturn, textreturnRect)
         pygame.display.flip()
 

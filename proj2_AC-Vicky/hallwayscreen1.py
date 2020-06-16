@@ -82,11 +82,11 @@ def hallway_run(plat, running):
     player_group = pygame.sprite.Group()
     enemy_group = pygame.sprite.Group()
 
-    player = Player_s()
+    plat.player = Player_s()
     enemy = Enemy_s()
 
-    all_sprites.add(player)
-    player_group.add(player)
+    all_sprites.add(plat.player)
+    player_group.add(plat.player)
 
     if plat.enemy_hall == 0:
         all_sprites.add(enemy)
@@ -131,12 +131,12 @@ def hallway_run(plat, running):
             break
  
         if keys[pygame.K_x]:
-            if player.x <= 150:
+            if plat.player.x <= 150:
                 plat.lastroom = plat.croom
                 plat.croom = "key"
                 running = False
                 break
-            elif player.x >= 1050:
+            elif plat.player.x >= 1050:
                 plat.lastroom = plat.croom
                 plat.croom = "doors"
                 running = False
@@ -145,28 +145,34 @@ def hallway_run(plat, running):
         if keys[pygame.K_UP]:
             attempt = 1
 
-        if keys[pygame.K_RIGHT] and player.x < 1150:
+        if keys[pygame.K_RIGHT] and plat.player.x < 1150:
             if plat.player.left == True:
                 plat.player.left = False
                 plat.player.haveflip = 0
                 plat.player.x = plat.player.x + plat.player.step_x
             else:
-                plat.player.x = plat.player.x + plat.player.step_x       
-        if keys[pygame.K_LEFT] and player.x > 50:
-           player.x = player.x - player.step_x
+                plat.player.x = plat.player.x + plat.player.step_x
 
-        if player.x >= 1100:
+        if keys[pygame.K_LEFT] and plat.player.x > 50:
+            if plat.player.left == False:
+                plat.player.left = True
+                plat.player.haveflip = 0
+                plat.player.x = plat.player.x - plat.player.step_x
+            else:
+                plat.player.x = plat.player.x - plat.player.step_x
+
+        if plat.player.x >= 1100:
             doors_enter = 1
         else:
             doors_enter = 0
 
-        if player.x <= 109:
+        if plat.player.x <= 109:
             key_enter = 1
         else:
             key_enter = 0
     
         if plat.enemy_hall == 0:
-            hit_enemy = pygame.sprite.spritecollide(player, enemy_group, True)
+            hit_enemy = pygame.sprite.spritecollide(plat.player, enemy_group, True)
 
             if hit_enemy:
                 plat.lastroom = plat.croom

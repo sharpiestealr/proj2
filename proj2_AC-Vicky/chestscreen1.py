@@ -82,7 +82,7 @@ def chest_run(plat, running):
             pygame.mixer.music.stop()
             plat.lastroom = plat.croom
             plat.croom = "combat"
-            plat.chest = 1
+            plat.chest1 = 1
             running = False
             break
         elif keys[pygame.K_x] and player.x <= 150:

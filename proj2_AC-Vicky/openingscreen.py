@@ -25,8 +25,10 @@ def opening_run(plat):
     cursor_y = 360
     posi = 1
     screen.blit(cursor, (cursor_x, cursor_y))
+    music = pygame.mixer.music.load(os.path.join(sound_path, "open.wav"))
 
     pygame.display.flip()
+    pygame.mixer.music.play()
 
     instruct = 0
 
@@ -56,7 +58,7 @@ def opening_run(plat):
                         instruct = 1
                     elif posi == 2:
                         plat.lastroom = plat.croom
-                        plat.croom = "creditsscreen"
+                        plat.croom = "credits"
                         running = False
                         break
                     elif posi == 3:

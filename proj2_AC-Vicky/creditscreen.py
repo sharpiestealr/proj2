@@ -8,7 +8,7 @@ sound_path = os.path.join(current_path, 'sounds')
 
 pygame.init()
 
-def run(plat, running):
+def credits_run(plat, running):
 
     plat.lastroom = plat.croom
     plat.croom = "credits"
@@ -34,13 +34,10 @@ def run(plat, running):
                 plat.stop = 1  
                 running = False
                 break
-    
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_ESCAPE]:
-            running = False
-            plat.stop = 1 
-            break
+            elif event.type == pygame.KEYDOWN:
+                plat.croom = "opening"
+                running = False
+                break
 
         screen.blit(background, (0,0))
         pygame.display.flip()
