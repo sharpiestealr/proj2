@@ -2,13 +2,15 @@ import pygame
 import os
 import stats
 
+#import paths
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
 sound_path = os.path.join(current_path, 'sounds')
 
 pygame.init()
 
-class Player_s(pygame.sprite.Sprite):
+#define sprite classes
+class Player_s(pygame.sprite.Sprite): #defined in cavescreen1.py
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join(image_path, "man still.png"))
@@ -30,7 +32,7 @@ class Player_s(pygame.sprite.Sprite):
         self.rect.x = self.x
         self.rect.y = self.y
 
-class Enemy_s(pygame.sprite.Sprite):
+class Enemy_s(pygame.sprite.Sprite): #defined in cavescreen1.py
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join(image_path, "overworld.png"))
@@ -62,12 +64,6 @@ def hallway_run(plat, running):
     plat.croom = "hallway"
     #this is the walk screen for the random hallway
 
-    current_path = os.path.dirname(__file__)
-    image_path = os.path.join(current_path, 'sprites')
-    sound_path = os.path.join(current_path, 'sounds')
-
-    pygame.init()
-
     #setting screen size
     screen = pygame.display.set_mode((1280,720))
 
@@ -77,6 +73,7 @@ def hallway_run(plat, running):
 
     music = pygame.mixer.music.load(os.path.join(sound_path, "walk.wav"))
 
+    #creating sprite groups
     all_sprites = pygame.sprite.Group()
     cenario = pygame.sprite.Group()
     player_group = pygame.sprite.Group()
@@ -88,32 +85,39 @@ def hallway_run(plat, running):
     all_sprites.add(plat.player)
     player_group.add(plat.player)
 
-    if plat.enemy_hall == 0:
+    if plat.enemy_hall == 0: #only one hall enemy per game
         all_sprites.add(enemy)
         enemy_group.add(enemy)
 
+    #update screen
     all_sprites.update()
     all_sprites.draw(screen)
     pygame.display.flip()
     pygame.mixer.music.play()
 
+    #messages
     font = pygame.font.Font('freesansbold.ttf', 36)
+    #error message when jumping
     textjump = font.render("You can't jump here", True, [0, 0, 0])
     textjumpRect = textjump.get_rect()
     textjumpRect.center = (700, 100)
 
+    #interact with door to key room
     textidoor = font.render("Press x to enter", True, [0, 0, 0])
     textidoorRect = textidoor.get_rect()
     textidoorRect.center = (700, 50)
 
+    #interact with door to doors room
     textedoor = font.render("Press x to enter", True, [0, 0, 0])
     textedoorRect = textedoor.get_rect()
     textedoorRect.center = (700, 50)
 
+    #variables for the messages
     attempt = 0
     key_enter = 0
     doors_enter = 0
 
+    #main game loop
     while running:
         pygame.time.delay(100)
 
@@ -131,47 +135,47 @@ def hallway_run(plat, running):
             break
  
         if keys[pygame.K_x]:
-            if plat.player.x <= 150:
+            if plat.player.x <= 150: #enter key room
                 plat.lastroom = plat.croom
                 plat.croom = "key"
                 running = False
                 break
-            elif plat.player.x >= 1050:
+            elif plat.player.x >= 1050: #enter door room
                 plat.lastroom = plat.croom
                 plat.croom = "doors"
                 running = False
                 break
 
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_UP]: #can't jump in hallway
             attempt = 1
 
-        if keys[pygame.K_RIGHT] and plat.player.x < 1150:
-            if plat.player.left == True:
+        if keys[pygame.K_RIGHT] and plat.player.x < 1150: #moving right within boundaries
+            if plat.player.left == True: #flipping sprite
                 plat.player.left = False
                 plat.player.haveflip = 0
                 plat.player.x = plat.player.x + plat.player.step_x
             else:
                 plat.player.x = plat.player.x + plat.player.step_x
 
-        if keys[pygame.K_LEFT] and plat.player.x > 50:
-            if plat.player.left == False:
+        if keys[pygame.K_LEFT] and plat.player.x > 50: #moving keft within boundaries
+            if plat.player.left == False: #flipping sprite
                 plat.player.left = True
                 plat.player.haveflip = 0
                 plat.player.x = plat.player.x - plat.player.step_x
             else:
                 plat.player.x = plat.player.x - plat.player.step_x
 
-        if plat.player.x >= 1100:
+        if plat.player.x >= 1100: #if within range, can enter door
             doors_enter = 1
         else:
             doors_enter = 0
 
-        if plat.player.x <= 109:
+        if plat.player.x <= 109: #if within range, can enter key
             key_enter = 1
         else:
             key_enter = 0
     
-        if plat.enemy_hall == 0:
+        if plat.enemy_hall == 0: #only one enemy in hall per game
             hit_enemy = pygame.sprite.spritecollide(plat.player, enemy_group, True)
 
             if hit_enemy:
@@ -182,6 +186,7 @@ def hallway_run(plat, running):
                 running = False
                 break
         
+        #update screen and messages
         screen.blit(background, (0,0))
         all_sprites.update()
         enemy.tick -= 1

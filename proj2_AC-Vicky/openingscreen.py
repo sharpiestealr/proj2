@@ -2,6 +2,7 @@ import pygame
 import os
 import stats
 
+#importing assets and paths
 plat = stats.Player()
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
@@ -14,6 +15,7 @@ running = False #add this below the change in croom
 def opening_run(plat):
     plat.croom = "opening"
 
+    #creating screen
     screen = pygame.display.set_mode((1280,720))
 
     background = pygame.image.load(os.path.join(image_path, "opening.jpg"))
@@ -23,14 +25,14 @@ def opening_run(plat):
     cursor = pygame.image.load(os.path.join(image_path, "arrow.png"))
     cursor_x = 343 - cursor.get_width()
     cursor_y = 360
-    posi = 1
+    posi = 1 #determine choice
     screen.blit(cursor, (cursor_x, cursor_y))
     music = pygame.mixer.music.load(os.path.join(sound_path, "open.wav"))
 
     pygame.display.flip()
     pygame.mixer.music.play()
 
-    instruct = 0
+    instruct = 0 #set instructions
 
     running = True
 
@@ -41,39 +43,39 @@ def opening_run(plat):
                 running = False
                 break
             elif event.type == pygame.KEYDOWN:
+                if instruct == 1: #once instructions are open, leave only when player is ready
+                    plat.croom = "cave"
+                    running = False
+                    break
                 if event.key == pygame.K_ESCAPE:
                     plat.stop = 1
                     running = False
                     break
-                elif event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN: #move cursor
                     if posi < 3:
                         cursor_y = cursor_y + 90
-                        posi = posi + 1
+                        posi = posi + 1 #update position
                 elif event.key == pygame.K_UP:
                     if posi > 1:
                         cursor_y = cursor_y - 90
-                        posi = posi - 1
+                        posi = posi - 1 #update position
                 if event.key == pygame.K_x:
-                    if posi == 1:
+                    if posi == 1: #if player chooses option one, load instructions
                         instruct = 1
-                    elif posi == 2:
+                    elif posi == 2: #if player chooses option two, load credits
                         plat.lastroom = plat.croom
                         plat.croom = "credits"
                         running = False
                         break
-                    elif posi == 3:
+                    elif posi == 3: #exit
                         plat.stop = 1
                         running = False
                         break
-                    if instruct == 1:
-                        plat.croom = "cave"
-                        running = False
-                        break
 
-        if instruct == 1:
+        if instruct == 1: #if player starts game, load instructions
             instructions = pygame.image.load(os.path.join(image_path, "instructions.jpg"))
             screen.blit(instructions, (0,0))
-        else:
+        else: #update screen with cursor
             screen.blit(background, (0,0))
             screen.blit(cursor, (cursor_x, cursor_y))
         pygame.display.flip()

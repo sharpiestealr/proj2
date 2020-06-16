@@ -2,6 +2,7 @@ import pygame
 import os
 import stats
 
+#importing necessary paths
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
 sound_path = os.path.join(current_path, 'sounds')
@@ -22,6 +23,7 @@ def door_run(plat, running):
     door_sound = pygame.mixer.Sound(os.path.join(sound_path, "close_door_1.wav"))
     music = pygame.mixer.music.load(os.path.join(sound_path, "walk.wav"))
 
+    #background elements/show choices
     font = pygame.font.Font('freesansbold.ttf', 36)
     text1 = font.render('LEFT', True, [0, 0, 0])
     text1Rect = text1.get_rect()
@@ -42,11 +44,13 @@ def door_run(plat, running):
     screen.blit(text3, text3Rect)
     screen.blit(textreturn, textreturnRect)
 
+    #update screen and start music
     pygame.display.flip()
     pygame.mixer.music.play()
 
+    #main game loop
     while running:
-        pygame.time.delay(100)
+        pygame.time.delay(100) #make player move continuously
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -56,11 +60,13 @@ def door_run(plat, running):
 
         keys = pygame.key.get_pressed()
 
+        #stop fail safe
         if keys[pygame.K_ESCAPE]:
             plat.stop = 1
             running = False
             break
-
+        
+        #enter the door on the left (chest room 2)
         if keys[pygame.K_LEFT]:
             pygame.mixer.Sound.play(door_sound)
             pygame.mixer.music.stop()
@@ -69,6 +75,7 @@ def door_run(plat, running):
             running = False
             break
 
+        #enter the middle door (boss room)
         if keys[pygame.K_UP]:
             pygame.mixer.Sound.play(door_sound)
             pygame.mixer.music.stop()
@@ -76,7 +83,8 @@ def door_run(plat, running):
             plat.croom = "final"
             running = False
             break
-
+        
+        #enter the door on the right (random enemy)
         if keys[pygame.K_RIGHT]:
             pygame.mixer.Sound.play(door_sound)
             pygame.mixer.music.stop()
@@ -86,6 +94,7 @@ def door_run(plat, running):
             running = False
             break
 
+        #return to previous room (hallway)
         if keys[pygame.K_x]:
             pygame.mixer.Sound.play(door_sound)
             pygame.mixer.music.stop()
@@ -95,6 +104,7 @@ def door_run(plat, running):
             running = False
             break
 
+        #update screen
         screen.blit(background, (0,0))
         screen.blit(text1, text1Rect)
         screen.blit(text2, text2Rect)

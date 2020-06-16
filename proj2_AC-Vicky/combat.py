@@ -12,9 +12,9 @@ plat = stats.Player()
 
 pg.init()
 
+#defining classes for combat
 class Player_c():
     def __init__(self):
-        #self.name = input("What's your name, adventurer? ")  
         self.hp = 12
         self.atk = 4
         self.df = 4
@@ -23,6 +23,7 @@ class Player_c():
         self.dmg = 0
         self.res = 0
 
+#define player's choice based on cursor location
 posi = 1
 
 def pattack(posi):
@@ -139,7 +140,7 @@ class Enemy(object): #pygame.sprite no pygame
                 self.dmg = self.atk -1
                 self.res = -1
 
-def combat_calc(enem, attk): #, mob_size to add if necessary
+def combat_calc(enem, attk): #
     #generating enemy
     #generating each single attack
     #defining enemy attack and player attack
@@ -184,7 +185,7 @@ def combat_run(rboss):
         enem_sprite = "goblin.png"
         enem_name = "goblin"
 
-    result = 0
+    result = 0 #resetting result of battle
 
     #creating screen and background
     screen = pg.display.set_mode((1280,720))
@@ -217,6 +218,7 @@ def combat_run(rboss):
     def_s = pg.image.load(os.path.join(image_path, "defense.png"))
     magic_s = pg.image.load(os.path.join(image_path, "magic.png"))
 
+    #generating and placing text for player to chose
     font = pg.font.Font('freesansbold.ttf', 36)
     text1 = font.render('Attack', True, [0, 0, 0])
     text2 = font.render('Defense', True, [0, 0, 0])
@@ -250,7 +252,7 @@ def combat_run(rboss):
 
     #creating cursor for choice
     ypos = 540
-    posi = 1
+    posi = 1 #determine which is the player's choice
     cursor = pg.image.load(os.path.join(image_path, "arrow.png"))
     cursor = pg.transform.scale(cursor, (int(cursor.get_width()*0.25), int(cursor.get_height()*0.25)))
 
@@ -265,7 +267,8 @@ def combat_run(rboss):
     pg.display.update()
 
     running = True
-
+    
+    #main loop
     while running:
         for event in pg.event.get():
             if event.type == pg.QUIT:
@@ -273,14 +276,15 @@ def combat_run(rboss):
                 running = False
                 pg.mixer.music.stop()
             elif event.type == pg.KEYDOWN:
-                if result != 0:
+                if result != 0: #after combat is over, leave combat
                     return result
                     running = False
                     break
                 if event.key == pg.K_ESCAPE:
-                    plat.stop = 1
+                    plat.stop = 1 #to exit loop in main
                     running = False
                     break
+                #moving the cursor
                 elif event.key == pg.K_DOWN:
                     if posi < 3:
                         ypos = ypos + 50
@@ -289,6 +293,7 @@ def combat_run(rboss):
                     if posi > 1:
                         ypos = ypos - 50
                         posi = posi - 1
+                #selecting the choice and calculating damage/health reduction
                 elif event.key == pg.K_x:
                     attk = pattack(posi)
                     h = combat_calc(enem, attk)
@@ -303,10 +308,11 @@ def combat_run(rboss):
                         result = 1
                     else:
                         healthe = h[1]
-
+                    #updating health values
                     textp = font.render("{0}".format(healthp), True, [0, 0, 0])
                     texte = font.render("{0}".format(healthe), True, [0, 0, 0]) 
 
+        #updating screen
         screen.blit(background, (0,0))
         screen.blit(player_char, (1030,200))
         screen.blit(enem_char, (150,200))
@@ -321,6 +327,8 @@ def combat_run(rboss):
         screen.blit(texte, texteRect)
         screen.blit(cursor, (750, ypos))
         screen.blit(vs, (550, 250))
+
+        #display result of battle on screen
         if result == 1:
             result_text = pg.image.load(os.path.join(image_path, "victory.png"))
             screen.blit(result_text, (550, 250))

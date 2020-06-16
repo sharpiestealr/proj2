@@ -2,6 +2,7 @@ import pygame
 import os
 import stats
 
+#import paths
 current_path = os.path.dirname(__file__)
 image_path = os.path.join(current_path, 'sprites')
 sound_path = os.path.join(current_path, 'sounds')
@@ -23,9 +24,11 @@ def credits_run(plat, running):
     #importing sounds and music
     music = pygame.mixer.music.load(os.path.join(sound_path, "ending.wav"))
     
+    #updating screen
     pygame.display.flip()
     pygame.mixer.music.play()
 
+    #main loop
     while running:
         pygame.time.delay(100)
 
@@ -35,7 +38,7 @@ def credits_run(plat, running):
                 running = False
                 break
             elif event.type == pygame.KEYDOWN:
-                plat.croom = "opening"
+                plat.croom = "opening" #return to title screen when player presses any key
                 running = False
                 break
 
