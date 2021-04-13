@@ -139,13 +139,13 @@ def combat_calc(enem, attk): #
     #generating each single attack
     #defining enemy attack and player attack
     if enem.mob == 'Goblin':
-       enem.gob_ATK()
+        enem.gob_ATK()
     elif enem.mob == 'Gnome':
-       enem.gno_ATK()
+        enem.gno_ATK()
     elif enem.mob == 'Slime':
-       enem.sli_ATK()
+        enem.sli_ATK()
     choice = enem.attack
-
+    
     #calculate damage, place damage
     enem.rps(attk)
     enem.hp = enem.hp - (plat.player_combat.dmg + enem.res)
@@ -153,31 +153,42 @@ def combat_calc(enem, attk): #
     info = [plat.player_combat.hp, enem.hp, choice]
     return info
 
-def combat_run(rboss):
-    plat.player_combat = Player_c()
-    #determining player and enemy stats
-    boss = 'no'
-    if rboss ==  1:
-            boss = 'yes'
-
+def enemBoss(boss):
     if boss == "no":
         enem_gen = random.randint(1,3)
         if enem_gen == 1:
             enem = Enemy('goblin', boss)
             enem_sprite = "goblin.png"
             enem_name = "goblin"
+            enemInfo = [enem, enem_sprite, enem_name]
+            return enemInfo
         elif enem_gen == 2:
             enem = Enemy('gnome', boss)
             enem_sprite = "gnome.png"
             enem_name = "gnome"
+            enemInfo = [enem, enem_sprite, enem_name]
+            return enemInfo
         else:
             enem = Enemy('slime', boss)
             enem_sprite = "slime.png"
             enem_name = "slime"
+            enemInfo = [enem, enem_sprite, enem_name]
+            return enemInfo
     else:
         enem = Enemy('goblin', boss)
         enem_sprite = "goblin.png"
         enem_name = "goblin"
+        enemInfo = [enem, enem_sprite, enem_name]
+        return enemInfo
+
+def combat_run(rboss):
+    plat.player_combat = Player_c()
+    #determining player and enemy stats
+    boss = 'no'
+    if rboss ==  1:
+        boss = 'yes'
+
+    enem, enem_sprite, enem_name = enemBoss(boss)
 
     result = 0 #resetting result of battle
 

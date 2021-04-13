@@ -33,11 +33,11 @@ class Player:
     locat = 0 #player location
     left = False #what side is the player facing
     haveflip = 0 #has the sprite flipped yet?
-    hp = 0
+    hp = 12
     atk = 0
     df = 0
     dmg = 0
     res = 0
     player = [x, y, step_x, step_y, isJump, isFall, jumpCount, locat] #sprite variables
-    #player_combat = [hp, atk, df, dmg, res] #combat variables
+    player_combat = [hp, atk, df, dmg, res] #combat variables
     stop = 0  #controls if game working
