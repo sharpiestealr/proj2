@@ -1,6 +1,13 @@
 class Player:
     """a place to keep player info"""
     #player stats
+    def combatStats(self):
+        self.hp = 12
+        self.atk = 4
+        self.df = 4
+        self.dmg = 0
+        self.res = 0
+    
     croom = "opening" #used to control the boss factor
     lastroom = "" #used for combat
     coins = 0 #collected coins
@@ -26,11 +33,11 @@ class Player:
     locat = 0 #player location
     left = False #what side is the player facing
     haveflip = 0 #has the sprite flipped yet?
-    hp = 12
-    atk = 4
-    df = 4
+    hp = 0
+    atk = 0
+    df = 0
     dmg = 0
     res = 0
     player = [x, y, step_x, step_y, isJump, isFall, jumpCount, locat] #sprite variables
-    player_combat = [hp, atk, df, dmg, res] #combat variables
+    #player_combat = [hp, atk, df, dmg, res] #combat variables
     stop = 0  #controls if game working

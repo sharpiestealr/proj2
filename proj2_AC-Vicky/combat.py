@@ -13,15 +13,9 @@ plat = stats.Player()
 pg.init()
 
 #defining classes for combat
-class Player_c():
+class Player_c(stats.Player):
     def __init__(self):
-        self.hp = 12
-        self.atk = 4
-        self.df = 4
-
-        #combat variables
-        self.dmg = 0
-        self.res = 0
+        super().combatStats()
 
 #define player's choice based on cursor location
 posi = 1
